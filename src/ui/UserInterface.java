@@ -45,6 +45,9 @@ public class UserInterface {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+
+		Menu.getList_test();
+
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1280, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
