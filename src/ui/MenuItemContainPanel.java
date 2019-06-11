@@ -12,9 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.Document;
 
 import menu.MenuItem;
 
@@ -30,39 +30,50 @@ public class MenuItemContainPanel extends JPanel {
     JTextField numInputTextField;
 
     MenuItemContainPanel(MenuItem item) {
+        
+        this.setBorder(new LineBorder(Color.LIGHT_GRAY, 1, true));
+
         this.setLayout(null);
         // imageIcon.getImage();
         itemNameLabel = new JLabel(item.getName());
-		itemNameLabel.setFont(new Font("黑体", Font.PLAIN, 18));
-		itemNameLabel.setBounds(102, 13, 271, 25);
+        itemNameLabel.setFont(new Font("微软雅黑", Font.PLAIN, 18));
+        itemNameLabel.setBounds(102, 13, 271, 25);
         this.add(itemNameLabel);
 
-		JLabel itemPriceLabel = new JLabel("￥" + item.getPrice());
-		itemPriceLabel.setForeground(Color.RED);
-		itemPriceLabel.setFont(new Font("黑体", Font.PLAIN, 20));
-		itemPriceLabel.setBounds(102, 62, 72, 25);
+        JLabel itemPriceLabel = new JLabel("￥" + item.getPrice());
+        itemPriceLabel.setForeground(Color.RED);
+        itemPriceLabel.setFont(new Font("微软雅黑", Font.PLAIN, 20));
+        itemPriceLabel.setBounds(102, 62, 72, 25);
         this.add(itemPriceLabel);
 
         minusButton = new JButton("-");
         minusButton.setFont(new Font("黑体", Font.PLAIN, 30));
         minusButton.setBounds(377, 24, 50, 50);
         this.add(minusButton);
-        minusButton.addActionListener(new ActionListener(){
-        
+        minusButton.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
+                minusOne();
                 zeroCheck();
             }
         });
-
 
         plusButton = new JButton("+");
         plusButton.setFont(new Font("黑体", Font.PLAIN, 30));
         plusButton.setBounds(490, 24, 50, 50);
         this.add(plusButton);
+        plusButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addOne();
+                zeroCheck();
+            }
+        });
 
         numInputTextField = new JTextField("0");
-		numInputTextField.setFont(new Font("黑体", Font.PLAIN, 20));
+        numInputTextField.setFont(new Font("黑体", Font.PLAIN, 20));
         numInputTextField.setBounds(441, 26, 35, 46);
         numInputTextField.setHorizontalAlignment(JTextField.CENTER);
         this.add(numInputTextField);
@@ -83,9 +94,10 @@ public class MenuItemContainPanel extends JPanel {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 System.out.println("changed.");
+                emptyCheck();
             }
         });
-        
+
         numInputTextField.addFocusListener(new FocusListener() {
 
             @Override
@@ -99,8 +111,8 @@ public class MenuItemContainPanel extends JPanel {
             }
         });
 
-        // minusButton.setVisible(false);
-        // numInputTextField.setVisible(false);
+        minusButton.setVisible(false);
+        numInputTextField.setVisible(false);
 
     }
 
@@ -137,15 +149,42 @@ public class MenuItemContainPanel extends JPanel {
                     numInputTextField.setText("0");
                 }
             }).start();
+            minusButton.setVisible(false);
+            numInputTextField.setVisible(false);
         }
     }
 
     void zeroCheck() {
         String text = numInputTextField.getText();
-        if(Integer.parseInt(text) == 0) {
+        if (Integer.parseInt(text) == 0) {
             minusButton.setVisible(false);
             numInputTextField.setVisible(false);
+            this.setBorder(new LineBorder(Color.LIGHT_GRAY, 1, true));
+        } else {
+            minusButton.setVisible(true);
+            numInputTextField.setVisible(true);
+            this.setBorder(new LineBorder(new Color(255, 165, 0), 2, true));
         }
+    }
+
+    void addOne() {
+        String text = numInputTextField.getText();
+        int beforeNum = Integer.parseInt(text);
+        numInputTextField.setText("" + (beforeNum + 1));
+    }
+
+    void minusOne() {
+        String text = numInputTextField.getText();
+        int beforeNum = Integer.parseInt(text);
+        if (beforeNum == 0) {
+            zeroCheck();
+            return;
+        }
+        numInputTextField.setText("" + (beforeNum - 1));
+    }
+
+    void actionPerformed() {
+
     }
 
 }

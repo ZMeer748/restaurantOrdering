@@ -25,7 +25,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JScrollBar;
 import java.awt.SystemColor;
-import javax.swing.ImageIcon;
 
 public class UserInterface_test {
 
@@ -95,7 +94,7 @@ public class UserInterface_test {
 		panel.setLayout(null);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		panel_1.setBorder(new LineBorder(new Color(255, 165, 0), 1, true));
 		panel_1.setBounds(14, 13, 553, 100);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
@@ -120,7 +119,6 @@ public class UserInterface_test {
 		panel_1.add(btnNewButton);
 		
 		JButton button = new JButton("+");
-		button.setIcon(new ImageIcon(UserInterface_test.class.getResource("/org/jb2011/lnf/beautyeye/ch3_button/imgs/np/btn_general_pressed.9.png")));
 		button.setFont(new Font("宋体", Font.PLAIN, 30));
 		button.setBounds(490, 24, 50, 50);
 		panel_1.add(button);
