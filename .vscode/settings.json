@@ -1,0 +1,13 @@
+{
+    "cSpell.words": [
+        "MICP",
+        "Zhou"
+    ],
+    "files.exclude": {
+        // "**/.gitignore": true,
+        "**/.project": true,
+        "**/.classpath": true,
+        "**/.settings": true,
+        "**/.vscode": true
+    }
+}
