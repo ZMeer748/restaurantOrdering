@@ -5,23 +5,29 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.junit.Test;
 
 public class Menu {
 
-	static private Map<Integer, MenuItem> itemList = new TreeMap<>();
+	static private Map<Integer, MenuItem> itemMap = new TreeMap<>();
 
 	public static void main(String[] args) {
 		getList_test();
+	}
+	
+	static {
+		getMenuContent("menu.txt");
 	}
 
 	@Test
 	public static void getList_test() {
 		getMenuContent("menu.txt");
-		for (Map.Entry<Integer, MenuItem> item : itemList.entrySet()) {
+		for (Map.Entry<Integer, MenuItem> item : itemMap.entrySet()) {
 			System.out.println(item.getValue().getName());
 		}
 	}
@@ -37,7 +43,7 @@ public class Menu {
 				StringTokenizer tokens = new StringTokenizer(str, "/");
 				tempCode = Integer.parseInt(tokens.nextToken());
 				tempItem = new MenuItem(tempCode, tokens.nextToken(), Double.parseDouble(tokens.nextToken()));
-				itemList.put(tempCode, tempItem);
+				itemMap.put(tempCode, tempItem);
 			}
 			br.close();
 		} catch (FileNotFoundException e) {
@@ -47,6 +53,18 @@ public class Menu {
 			// e.printStackTrace();
 			System.out.println("There is something wrong.");
 		}
+	}
+
+	static public int getNum() {
+		return itemMap.size();
+	}
+
+	static public Set<Entry<Integer, MenuItem>> getEntrySet() {
+		return itemMap.entrySet();
+	}
+
+	static public MenuItem getItem(int inCode) {
+		return itemMap.get(inCode);
 	}
 
 }
