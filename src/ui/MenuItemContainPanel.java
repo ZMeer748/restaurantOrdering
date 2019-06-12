@@ -73,6 +73,44 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
 
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand() == "-") {
+            minusOne();
+            zeroCheck();
+        } else if (e.getActionCommand() == "+") {
+            addOne();
+            zeroCheck();
+        }
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        System.out.println("numText remove.");
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        System.out.println("numText insert.");
+        inputCheck();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        System.out.println("numText changed.");
+        emptyCheck();
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        numInputTextField.selectAll();
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        emptyCheck();
+    }
+
     void inputCheck() {
         String text = numInputTextField.getText();
         // System.out.println(text);
@@ -138,44 +176,6 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
             return;
         }
         numInputTextField.setText("" + (beforeNum - 1));
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand() == "-") {
-            minusOne();
-            zeroCheck();
-        } else if (e.getActionCommand() == "+") {
-            addOne();
-            zeroCheck();
-        }
-    }
-
-    @Override
-    public void removeUpdate(DocumentEvent e) {
-        System.out.println("numText remove.");
-    }
-
-    @Override
-    public void insertUpdate(DocumentEvent e) {
-        System.out.println("numText insert.");
-        inputCheck();
-    }
-
-    @Override
-    public void changedUpdate(DocumentEvent e) {
-        System.out.println("numText changed.");
-        emptyCheck();
-    }
-
-    @Override
-    public void focusGained(FocusEvent e) {
-        numInputTextField.selectAll();
-    }
-
-    @Override
-    public void focusLost(FocusEvent e) {
-        emptyCheck();
     }
 
 }

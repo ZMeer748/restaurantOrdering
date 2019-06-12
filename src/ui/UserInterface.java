@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.Spring;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
@@ -23,6 +24,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import javax.swing.JMenu;
+import javax.swing.SpringLayout;
 
 public class UserInterface {
 
@@ -79,47 +81,69 @@ public class UserInterface {
 		}
 
 		frame = new JFrame();
-		frame.setTitle("Welcome");
+		frame.setTitle("Order System...");
 		frame.setBounds(100, 100, 1280, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JPanel mainPanel = new JPanel();
 		frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
-		mainPanel.setLayout(null);
+		SpringLayout sl_mainPanel = new SpringLayout();
+		mainPanel.setLayout(sl_mainPanel);
 
 		JScrollPane menuScrollPane = new JScrollPane();
-		menuScrollPane.setBounds(14, 70, 0, 0);
-		menuScrollPane.setSize(600, 560);
+		// sl_mainPanel.putConstraint(SpringLayout.NORTH, menuScrollPane, 70,
+		// SpringLayout.NORTH, mainPanel);
+		// sl_mainPanel.putConstraint(SpringLayout.WEST, menuScrollPane, 14,
+		// SpringLayout.WEST, mainPanel);
+		// sl_mainPanel.putConstraint(SpringLayout.SOUTH, menuScrollPane, 630,
+		// SpringLayout.NORTH, mainPanel);
+		// sl_mainPanel.putConstraint(SpringLayout.EAST, menuScrollPane, 614,
+		// SpringLayout.WEST, mainPanel);
 		mainPanel.add(menuScrollPane);
 
 		JPanel itemsContainPanel = new JPanel();
 		itemsContainPanel.setPreferredSize(new Dimension(566, Menu.getNum() * 112));
-		// itemsContainPanel.setPreferredSize(new Dimension(579, 900));
 		menuScrollPane.setViewportView(itemsContainPanel);
 		itemsContainPanel.setLayout(null);
-
-		// MenuItemContainPanel micp = new MenuItemContainPanel(Menu.getItem(2));
-		// micp.setBounds(6, 6, 553, 100);
-		// itemsContainPanel.add(micp);
-
-		// MenuItemContainPanel micp2 = new MenuItemContainPanel(Menu.getItem(4));
-		// micp2.setBounds(6, 118, 553, 100);
-		// itemsContainPanel.add(micp2);
 
 		for (MenuItemContainPanel micp : MICPList) {
 			itemsContainPanel.add(micp);
 		}
 
-		// itemsContainPanel.add(MICPList.get(0));
-
 		JLabel lblMenu = new JLabel("MENU");
+		// sl_mainPanel.putConstraint(SpringLayout.NORTH, lblMenu, 13,
+		// SpringLayout.NORTH, mainPanel);
+		// sl_mainPanel.putConstraint(SpringLayout.WEST, lblMenu, 14, SpringLayout.WEST,
+		// mainPanel);
 		lblMenu.setFont(new Font("微软雅黑", Font.BOLD, 32));
-		lblMenu.setBounds(14, 13, 103, 43);
 		mainPanel.add(lblMenu);
 
 		JLabel lblPleaseOrdering = new JLabel("Please ordering.");
+		// sl_mainPanel.putConstraint(SpringLayout.NORTH, lblPleaseOrdering, 29,
+		// SpringLayout.NORTH, mainPanel);
+		// sl_mainPanel.putConstraint(SpringLayout.WEST, lblPleaseOrdering, 131,
+		// SpringLayout.WEST, mainPanel);
+		// sl_mainPanel.putConstraint(SpringLayout.EAST, lblPleaseOrdering, 295,
+		// SpringLayout.WEST, mainPanel);
 		lblPleaseOrdering.setFont(new Font("微软雅黑", Font.PLAIN, 16));
-		lblPleaseOrdering.setBounds(131, 29, 164, 22);
 		mainPanel.add(lblPleaseOrdering);
+
+		SpringLayout.Constraints lblMenuCons = sl_mainPanel.getConstraints(lblMenu);
+		lblMenuCons.setX(Spring.constant(14));
+		lblMenuCons.setY(Spring.constant(13));
+
+		SpringLayout.Constraints lblPleaseOrderingCons = sl_mainPanel.getConstraints(lblPleaseOrdering);
+		lblPleaseOrderingCons.setX(Spring.sum(lblMenuCons.getConstraint(SpringLayout.EAST), Spring.constant(6)));
+		lblPleaseOrderingCons.setY(Spring.constant(29));
+
+		SpringLayout.Constraints menuScrollPaneCons = sl_mainPanel.getConstraints(menuScrollPane);
+		menuScrollPaneCons.setX(Spring.constant(14));
+		menuScrollPaneCons.setY(Spring.sum(lblMenuCons.getConstraint(SpringLayout.SOUTH), Spring.constant(6)));
+
+		SpringLayout.Constraints mainPanelCons = sl_mainPanel.getConstraints(mainPanel);
+		mainPanelCons.setConstraint(SpringLayout.SOUTH,
+				Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.SOUTH), Spring.constant(14)));
+
+		sl_mainPanel.putConstraint(SpringLayout.EAST, menuScrollPane, 614, SpringLayout.WEST, mainPanel);
 	}
 }
