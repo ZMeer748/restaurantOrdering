@@ -21,8 +21,9 @@ import menu.MenuItem;
 /**
  * MenuItemContainPanel
  */
-public class MenuItemContainPanel extends JPanel {
+public class MenuItemContainPanel extends JPanel implements ActionListener, DocumentListener, FocusListener {
 
+    private static final long serialVersionUID = 6578743630052115083L;
     MenuItem item;
     ImageIcon imageIcon;
     JLabel itemNameLabel;
@@ -30,7 +31,7 @@ public class MenuItemContainPanel extends JPanel {
     JTextField numInputTextField;
 
     MenuItemContainPanel(MenuItem item) {
-        
+
         this.setBorder(new LineBorder(Color.LIGHT_GRAY, 1, true));
 
         this.setLayout(null);
@@ -50,27 +51,13 @@ public class MenuItemContainPanel extends JPanel {
         minusButton.setFont(new Font("黑体", Font.PLAIN, 30));
         minusButton.setBounds(377, 24, 50, 50);
         this.add(minusButton);
-        minusButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                minusOne();
-                zeroCheck();
-            }
-        });
+        minusButton.addActionListener(this);
 
         plusButton = new JButton("+");
         plusButton.setFont(new Font("黑体", Font.PLAIN, 30));
         plusButton.setBounds(490, 24, 50, 50);
         this.add(plusButton);
-        plusButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addOne();
-                zeroCheck();
-            }
-        });
+        plusButton.addActionListener(this);
 
         numInputTextField = new JTextField("0");
         numInputTextField.setFont(new Font("黑体", Font.PLAIN, 20));
@@ -78,38 +65,8 @@ public class MenuItemContainPanel extends JPanel {
         numInputTextField.setHorizontalAlignment(JTextField.CENTER);
         this.add(numInputTextField);
         // numInputTextField.setColumns(10);
-        numInputTextField.getDocument().addDocumentListener(new DocumentListener() {
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                System.out.println("remove.");
-            }
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                System.out.println("insert.");
-                inputCheck();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                System.out.println("changed.");
-                emptyCheck();
-            }
-        });
-
-        numInputTextField.addFocusListener(new FocusListener() {
-
-            @Override
-            public void focusGained(FocusEvent e) {
-                numInputTextField.selectAll();
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                emptyCheck();
-            }
-        });
+        numInputTextField.getDocument().addDocumentListener(this);
+        numInputTextField.addFocusListener(this);
 
         minusButton.setVisible(false);
         numInputTextField.setVisible(false);
@@ -120,7 +77,7 @@ public class MenuItemContainPanel extends JPanel {
         String text = numInputTextField.getText();
         // System.out.println(text);
         if (text.matches("0[\\d]")) {
-            System.out.println("0*");
+            System.out.println("numText matches 0*");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -128,7 +85,7 @@ public class MenuItemContainPanel extends JPanel {
                 }
             }).start();
         } else if (!text.matches("[1-9]?[\\d]")) {
-            System.out.println("input Error.");
+            System.out.println("numText input Error.");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -142,7 +99,7 @@ public class MenuItemContainPanel extends JPanel {
         String text = numInputTextField.getText();
         // System.out.println(text);
         if (text.equals("")) {
-            System.out.println("empty");
+            System.out.println("numText empty");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -183,8 +140,42 @@ public class MenuItemContainPanel extends JPanel {
         numInputTextField.setText("" + (beforeNum - 1));
     }
 
-    void actionPerformed() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand() == "-") {
+            minusOne();
+            zeroCheck();
+        } else if (e.getActionCommand() == "+") {
+            addOne();
+            zeroCheck();
+        }
+    }
 
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        System.out.println("numText remove.");
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        System.out.println("numText insert.");
+        inputCheck();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        System.out.println("numText changed.");
+        emptyCheck();
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        numInputTextField.selectAll();
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        emptyCheck();
     }
 
 }
