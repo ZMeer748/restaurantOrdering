@@ -1,4 +1,4 @@
-package ui;
+package ui.demoTest;
 
 import javax.swing.*;
 

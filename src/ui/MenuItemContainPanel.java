@@ -109,6 +109,7 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
     @Override
     public void focusLost(FocusEvent e) {
         emptyCheck();
+        zeroCheck();
     }
 
     void inputCheck() {
