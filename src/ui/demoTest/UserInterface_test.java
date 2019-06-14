@@ -1,4 +1,4 @@
-package ui;
+package ui.demoTest;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,6 +21,7 @@ import javax.swing.border.LineBorder;
 import menu.Menu;
 import menu.MenuItem;
 import java.awt.BorderLayout;
+import javax.swing.SpringLayout;
 
 public class UserInterface_test {
 
@@ -87,54 +88,80 @@ public class UserInterface_test {
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(566, Menu.getNum() * 100));
 		scrollPane.setViewportView(panel);
-		panel.setLayout(null);
+		SpringLayout sl_panel = new SpringLayout();
+		panel.setLayout(sl_panel);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(new Color(255, 165, 0), 1, true));
-		panel_1.setBounds(6, 6, 553, 100);
+		sl_panel.putConstraint(SpringLayout.NORTH, panel_1, 6, SpringLayout.NORTH, panel);
+		sl_panel.putConstraint(SpringLayout.WEST, panel_1, 6, SpringLayout.WEST, panel);
+		sl_panel.putConstraint(SpringLayout.SOUTH, panel_1, 106, SpringLayout.NORTH, panel);
+		sl_panel.putConstraint(SpringLayout.EAST, panel_1, 559, SpringLayout.WEST, panel);
 		panel.add(panel_1);
-		panel_1.setLayout(null);
+		SpringLayout sl_panel_1 = new SpringLayout();
+		panel_1.setLayout(sl_panel_1);
 
 		JPanel panel_2 = new JPanel();
+		sl_panel_1.putConstraint(SpringLayout.NORTH, panel_2, 13, SpringLayout.NORTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.WEST, panel_2, 14, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.SOUTH, panel_2, 87, SpringLayout.NORTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, panel_2, 88, SpringLayout.WEST, panel_1);
 		panel_2.setBackground(Color.ORANGE);
-		panel_2.setBounds(14, 13, 74, 74);
 		panel_1.add(panel_2);
 
 		JLabel lblNewLabel = new JLabel("Sirloin Steak with Spaghetti");
+		sl_panel_1.putConstraint(SpringLayout.NORTH, lblNewLabel, 13, SpringLayout.NORTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.WEST, lblNewLabel, 102, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.SOUTH, lblNewLabel, 49, SpringLayout.NORTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, lblNewLabel, 373, SpringLayout.WEST, panel_1);
 		lblNewLabel.setFont(new Font("黑体", Font.PLAIN, 18));
-		lblNewLabel.setBounds(102, 13, 271, 36);
 		panel_1.add(lblNewLabel);
 
 		JButton btnNewButton = new JButton("-");
+		sl_panel_1.putConstraint(SpringLayout.NORTH, btnNewButton, 24, SpringLayout.NORTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.WEST, btnNewButton, 377, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.SOUTH, btnNewButton, 74, SpringLayout.NORTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, btnNewButton, 427, SpringLayout.WEST, panel_1);
 		btnNewButton.setFont(new Font("黑体", Font.PLAIN, 30));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		btnNewButton.setBounds(377, 24, 50, 50);
 		panel_1.add(btnNewButton);
 
 		JButton button = new JButton("+");
+		sl_panel_1.putConstraint(SpringLayout.NORTH, button, 24, SpringLayout.NORTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.WEST, button, 490, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.SOUTH, button, 74, SpringLayout.NORTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, button, 540, SpringLayout.WEST, panel_1);
 		button.setFont(new Font("宋体", Font.PLAIN, 30));
-		button.setBounds(490, 24, 50, 50);
 		panel_1.add(button);
 
 		textField = new JTextField();
+		sl_panel_1.putConstraint(SpringLayout.NORTH, textField, 24, SpringLayout.NORTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.WEST, textField, 441, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.SOUTH, textField, 74, SpringLayout.NORTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, textField, 476, SpringLayout.WEST, panel_1);
 		textField.setFont(new Font("黑体", Font.PLAIN, 20));
-		textField.setBounds(441, 24, 35, 50);
 		panel_1.add(textField);
 		// textField.setColumns(3);
 
 		JLabel label = new JLabel("￥30.0");
+		sl_panel_1.putConstraint(SpringLayout.NORTH, label, 62, SpringLayout.NORTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.WEST, label, 102, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.SOUTH, label, 87, SpringLayout.NORTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label, 174, SpringLayout.WEST, panel_1);
 		label.setForeground(Color.RED);
 		label.setFont(new Font("微软雅黑", Font.PLAIN, 20));
-		label.setBounds(102, 62, 72, 25);
 		panel_1.add(label);
 
 		JLabel lblMenu = new JLabel("MENU");
 		lblMenu.setBounds(14, 13, 88, 51);
 		panel_3.add(lblMenu);
 		lblMenu.setFont(new Font("黑体", Font.PLAIN, 44));
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(628, 77, 479, 320);
+		panel_3.add(scrollPane_1);
 
 	}
 }

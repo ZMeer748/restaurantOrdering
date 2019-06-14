@@ -22,6 +22,8 @@ public class UserInterface {
 
 	SpringLayout.Constraints mainPanelCons, lblMenuCons, lblPleaseOrderingCons, menuScrollPaneCons;
 
+	final Spring defaultNORTH = Spring.constant(10), defaultWEST = Spring.constant(10);
+
 	/**
 	 * Launch the application.
 	 */
@@ -60,14 +62,10 @@ public class UserInterface {
 		frame.setTitle("Order System...");
 		frame.setBounds(100, 100, 1280, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 
-		mainPanel = new JPanel();
-		frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
-		sl_mainPanel = new SpringLayout();
-		mainPanel.setLayout(sl_mainPanel);
-
-		menuScrollPane = new MenuScrollPane();
-		mainPanel.add(menuScrollPane);
+		JPanel mainPanel = new JPanel();
+		frame.getContentPane().add(mainPanel);
 
 		lblMenu = new JLabel("MENU");
 		lblMenu.setFont(new Font("微软雅黑", Font.BOLD, 32));
@@ -77,23 +75,33 @@ public class UserInterface {
 		lblPleaseOrdering.setFont(new Font("微软雅黑", Font.PLAIN, 16));
 		mainPanel.add(lblPleaseOrdering);
 
+		menuScrollPane = new MenuScrollPane();
+		mainPanel.add(menuScrollPane);
+
+		sl_mainPanel = new SpringLayout();
+		mainPanel.setLayout(sl_mainPanel);
+
 		lblMenuCons = sl_mainPanel.getConstraints(lblMenu);
-		lblMenuCons.setX(Spring.constant(14));
-		lblMenuCons.setY(Spring.constant(13));
-
 		lblPleaseOrderingCons = sl_mainPanel.getConstraints(lblPleaseOrdering);
-		lblPleaseOrderingCons.setX(Spring.sum(lblMenuCons.getConstraint(SpringLayout.EAST), Spring.constant(6)));
-		lblPleaseOrderingCons.setY(Spring.sum(lblMenuCons.getConstraint(SpringLayout.SOUTH),
-				Spring.constant(-lblPleaseOrderingCons.getHeight().getValue())));
-
 		menuScrollPaneCons = sl_mainPanel.getConstraints(menuScrollPane);
-		menuScrollPaneCons.setX(Spring.constant(14));
-		menuScrollPaneCons.setY(Spring.sum(lblMenuCons.getConstraint(SpringLayout.SOUTH), Spring.constant(6)));
+		mainPanelCons = sl_mainPanel.getConstraints(mainPanel);
+
+		lblMenuCons.setConstraint(SpringLayout.WEST, defaultWEST);
+		lblMenuCons.setConstraint(SpringLayout.NORTH, defaultNORTH);
+
+		lblPleaseOrderingCons.setX(Spring.sum(lblMenuCons.getConstraint(SpringLayout.EAST), Spring.constant(10)));
+		lblPleaseOrderingCons.setConstraint(SpringLayout.SOUTH, lblMenuCons.getConstraint(SpringLayout.SOUTH));
+
+		menuScrollPaneCons.setConstraint(SpringLayout.WEST, defaultWEST);
+		menuScrollPaneCons.setConstraint(SpringLayout.NORTH,
+				Spring.sum(lblMenuCons.getConstraint(SpringLayout.SOUTH), Spring.constant(10)));
 		menuScrollPaneCons.setWidth(Spring.constant(600));
 
-		mainPanelCons = sl_mainPanel.getConstraints(mainPanel);
 		mainPanelCons.setConstraint(SpringLayout.SOUTH,
 				Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.SOUTH), Spring.constant(14)));
+
+		menuScrollPane.setLayouts(menuScrollPaneCons);
+		System.out.println();
 
 	}
 }
