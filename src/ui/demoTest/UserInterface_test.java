@@ -1,5 +1,6 @@
 package ui.demoTest;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -16,12 +17,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
+import javax.swing.SpringLayout;
 
 import menu.Menu;
 import menu.MenuItem;
-import java.awt.BorderLayout;
-import javax.swing.SpringLayout;
 
 public class UserInterface_test {
 
@@ -129,6 +128,7 @@ public class UserInterface_test {
 		panel_1.add(btnNewButton);
 
 		JButton button = new JButton("+");
+		button.setForeground(Color.WHITE);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, button, 24, SpringLayout.NORTH, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.WEST, button, 490, SpringLayout.WEST, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, button, 74, SpringLayout.NORTH, panel_1);

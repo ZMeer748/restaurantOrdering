@@ -73,4 +73,10 @@ public class MenuScrollPane extends JScrollPane {
 
     }
 
+    public void resetAllNumTextField() {
+        for (MenuItemContainPanel micp : this.MICPList) {
+            micp.setZero();
+        }
+    }
+
 }

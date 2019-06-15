@@ -1,7 +1,8 @@
 package ui.demoTest;
 
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
+
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
@@ -10,11 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.Spring;
 import javax.swing.SpringLayout;
-import javax.swing.border.LineBorder;
-import static javax.swing.ScrollPaneConstants.*;
 
 import menu.Menu;
 import menu.MenuItem;
@@ -25,7 +23,7 @@ public class UserInterface_test_SpringLayout {
 	Menu menu = new Menu();
 
 	private JFrame frame;
-	private JTextField textField;
+	// private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -120,6 +118,8 @@ public class UserInterface_test_SpringLayout {
 
 		mainPanelCons.setConstraint(SpringLayout.SOUTH,
 				Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.SOUTH), Spring.constant(10)));
+		mainPanelCons.setConstraint(SpringLayout.EAST,
+				Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.EAST), Spring.constant(10)));
 
 		System.out.println(menuScrollPaneBarCons.getWidth().getValue());
 		System.out.println(micpContainPanelCons.getConstraint(SpringLayout.EAST).getValue());

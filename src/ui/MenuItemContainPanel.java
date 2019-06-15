@@ -19,6 +19,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
+
 import menu.MenuItem;
 
 /**
@@ -51,11 +53,13 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
         this.add(lblItemPrice);
 
         btnMinus = new JButton("-");
-        btnMinus.setFont(new Font("黑体", Font.BOLD, 30));
+        btnMinus.setFont(new Font("黑体", Font.PLAIN, 30));
         this.add(btnMinus);
 
         btnAdd = new JButton("+");
-        btnAdd.setFont(new Font("黑体", Font.BOLD, 30));
+        btnAdd.setFont(new Font("黑体", Font.PLAIN, 30));
+        btnAdd.setForeground(Color.WHITE);
+        btnAdd.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.red));
         this.add(btnAdd);
 
         textFieldNumInput = new JTextField("0");
@@ -67,7 +71,7 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
         textFieldNumInput.setVisible(false);
 
         sl_micp = new SpringLayout();
-        this.setBorder(BorderFactory.createDashedBorder(Color.LIGHT_GRAY, 2, 6, 2, true));
+        this.setBorder(BorderFactory.createDashedBorder(Color.LIGHT_GRAY, 2, 16, 1, true));
         this.setLayout(sl_micp);
 
         btnMinus.addActionListener(this);
@@ -102,9 +106,9 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
         btnAddCons.setConstraint(SpringLayout.EAST,
                 Spring.sum(micpCons.getConstraint(SpringLayout.EAST), Spring.constant(-50)));
 
-        textFieldNumInputCons.setY(Spring.constant(30));
-        textFieldNumInputCons.setWidth(Spring.constant(40));
-        textFieldNumInputCons.setHeight(Spring.constant(40));
+        textFieldNumInputCons.setY(Spring.constant(27));
+        textFieldNumInputCons.setWidth(Spring.constant(36));
+        textFieldNumInputCons.setHeight(Spring.constant(46));
         textFieldNumInputCons.setConstraint(SpringLayout.EAST,
                 Spring.sum(btnAddCons.getConstraint(SpringLayout.WEST), Spring.constant(-10)));
 
@@ -113,6 +117,9 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
         btnMinusCons.setHeight(Spring.constant(50));
         btnMinusCons.setConstraint(SpringLayout.EAST,
                 Spring.sum(textFieldNumInputCons.getConstraint(SpringLayout.WEST), Spring.constant(-10)));
+
+        lblItemNameCons.setWidth(Spring.sum(btnMinusCons.getConstraint(SpringLayout.WEST),
+                Spring.constant(-lblItemNameCons.getConstraint(SpringLayout.WEST).getValue() - 3)));
 
     }
 
@@ -179,7 +186,6 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
 
     void emptyCheck() {
         String text = textFieldNumInput.getText();
-        // System.out.println(text);
         if (text.equals("")) {
             System.out.println("numText empty");
             new Thread(new Runnable() {
@@ -198,7 +204,7 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
         if (Integer.parseInt(text) == 0) {
             btnMinus.setVisible(false);
             textFieldNumInput.setVisible(false);
-            this.setBorder(BorderFactory.createDashedBorder(Color.LIGHT_GRAY, 2, 6, 2, true));
+            this.setBorder(BorderFactory.createDashedBorder(Color.LIGHT_GRAY, 2, 16, 1, true));
         } else {
             btnMinus.setVisible(true);
             textFieldNumInput.setVisible(true);
@@ -220,6 +226,19 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
             return;
         }
         textFieldNumInput.setText("" + (beforeNum - 1));
+    }
+
+    void setZero() {
+        System.out.println("numText setZero");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                textFieldNumInput.setText("0");
+            }
+        }).start();
+        this.setBorder(BorderFactory.createDashedBorder(Color.LIGHT_GRAY, 2, 16, 1, true));
+        btnMinus.setVisible(false);
+        textFieldNumInput.setVisible(false);
     }
 
 }

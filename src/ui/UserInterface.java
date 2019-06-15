@@ -1,9 +1,13 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -11,16 +15,21 @@ import javax.swing.Spring;
 import javax.swing.SpringLayout;
 import javax.swing.UIManager;
 
-public class UserInterface {
+import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
+
+public class UserInterface implements ActionListener {
 
 	private JFrame frame;
 	JPanel mainPanel;
+
 	JLabel lblMenu, lblPleaseOrdering;
 	MenuScrollPane menuScrollPane;
+	JButton btnSubmit, btnReset;
 
-	SpringLayout sl_mainPanel;
+	SpringLayout sl_menuPanel;
 
-	SpringLayout.Constraints mainPanelCons, lblMenuCons, lblPleaseOrderingCons, menuScrollPaneCons;
+	SpringLayout.Constraints menuPanelCons, lblMenuCons, lblPleaseOrderingCons, menuScrollPaneCons, btnSubmitCons,
+			btnResetCons;
 
 	final Spring defaultNORTH = Spring.constant(10), defaultWEST = Spring.constant(10);
 
@@ -78,13 +87,30 @@ public class UserInterface {
 		menuScrollPane = new MenuScrollPane();
 		mainPanel.add(menuScrollPane);
 
-		sl_mainPanel = new SpringLayout();
-		mainPanel.setLayout(sl_mainPanel);
+		btnSubmit = new JButton("提交");
+		btnSubmit.setFont(new Font("微软雅黑", Font.BOLD, 18));
+		btnSubmit.setForeground(Color.WHITE);
+		btnSubmit.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.lightBlue));
+		mainPanel.add(btnSubmit);
 
-		lblMenuCons = sl_mainPanel.getConstraints(lblMenu);
-		lblPleaseOrderingCons = sl_mainPanel.getConstraints(lblPleaseOrdering);
-		menuScrollPaneCons = sl_mainPanel.getConstraints(menuScrollPane);
-		mainPanelCons = sl_mainPanel.getConstraints(mainPanel);
+		btnReset = new JButton("重置");
+		btnReset.setFont(new Font("微软雅黑", Font.BOLD, 18));
+		btnReset.setForeground(Color.WHITE);
+		btnReset.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.green));
+		mainPanel.add(btnReset);
+		btnReset.addActionListener(this);
+		btnReset.setActionCommand("Reset");
+
+		// Layout Setting...
+		sl_menuPanel = new SpringLayout();
+		mainPanel.setLayout(sl_menuPanel);
+
+		lblMenuCons = sl_menuPanel.getConstraints(lblMenu);
+		lblPleaseOrderingCons = sl_menuPanel.getConstraints(lblPleaseOrdering);
+		menuScrollPaneCons = sl_menuPanel.getConstraints(menuScrollPane);
+		menuPanelCons = sl_menuPanel.getConstraints(mainPanel);
+		btnSubmitCons = sl_menuPanel.getConstraints(btnSubmit);
+		btnResetCons = sl_menuPanel.getConstraints(btnReset);
 
 		lblMenuCons.setConstraint(SpringLayout.WEST, defaultWEST);
 		lblMenuCons.setConstraint(SpringLayout.NORTH, defaultNORTH);
@@ -97,11 +123,31 @@ public class UserInterface {
 				Spring.sum(lblMenuCons.getConstraint(SpringLayout.SOUTH), Spring.constant(10)));
 		menuScrollPaneCons.setWidth(Spring.constant(600));
 
-		mainPanelCons.setConstraint(SpringLayout.SOUTH,
-				Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.SOUTH), Spring.constant(14)));
+		menuPanelCons.setConstraint(SpringLayout.EAST,
+				Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.EAST), Spring.constant(10)));
 
 		menuScrollPane.setLayouts(menuScrollPaneCons);
-		System.out.println();
+
+		btnSubmitCons.setConstraint(SpringLayout.EAST,
+				Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.EAST), Spring.constant(-3)));
+		btnSubmitCons.setConstraint(SpringLayout.NORTH,
+				Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.SOUTH), Spring.constant(10)));
+
+		btnResetCons.setConstraint(SpringLayout.EAST,
+				Spring.sum(btnSubmitCons.getConstraint(SpringLayout.WEST), Spring.constant(-10)));
+		btnResetCons.setConstraint(SpringLayout.NORTH, btnSubmitCons.getConstraint(SpringLayout.NORTH));
+
+		menuPanelCons.setConstraint(SpringLayout.SOUTH,
+				Spring.sum(btnSubmitCons.getConstraint(SpringLayout.SOUTH), Spring.constant(10)));
 
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("Reset")) {
+			System.out.println("Reset");
+			menuScrollPane.resetAllNumTextField();
+		}
+	}
+	
 }
