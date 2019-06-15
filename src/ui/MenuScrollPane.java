@@ -39,7 +39,6 @@ public class MenuScrollPane extends JScrollPane {
         MICPList = new ArrayList<>();
         for (Entry<Integer, MenuItem> entry : Menu.getEntrySet()) {
             MenuItemContainPanel micp = new MenuItemContainPanel(entry.getValue());
-            System.out.println(entry.getValue().getName());
             MICPList.add(micp);
             itemsContainPanel.add(micp);
         }
@@ -69,12 +68,11 @@ public class MenuScrollPane extends JScrollPane {
         }
 
         itemsContainPanelCons.setConstraint(SpringLayout.SOUTH, Spring.sum(beforeSOUTH, Spring.constant(6)));
-        System.out.println(itemsContainPanelCons.getConstraint(SpringLayout.SOUTH).getValue());
 
     }
 
     public void resetAllNumTextField() {
-        for (MenuItemContainPanel micp : this.MICPList) {
+        for (MenuItemContainPanel micp : MICPList) {
             micp.setZero();
         }
     }

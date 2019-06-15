@@ -29,7 +29,7 @@ import menu.MenuItem;
 public class MenuItemContainPanel extends JPanel implements ActionListener, DocumentListener, FocusListener {
 
     private static final long serialVersionUID = 6578743630052115083L;
-    MenuItem item;
+    private MenuItem item;
     ImageIcon imageIcon;
     JLabel lblItemName, lblItemPrice;
     JButton btnAdd, btnMinus;
@@ -39,12 +39,14 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
     SpringLayout.Constraints micpCons, lblItemNameCons, lblItemPriceCons, btnMinusCons, btnAddCons,
             textFieldNumInputCons;
 
-    public MenuItemContainPanel(MenuItem item) {
+    public MenuItemContainPanel(MenuItem inItem) {
+
+        item = inItem;
 
         // imageIcon.getImage();
 
         lblItemName = new JLabel(item.getName());
-        lblItemName.setFont(new Font("微软雅黑", Font.BOLD, 18));
+        lblItemName.setFont(new Font("微软雅黑", Font.PLAIN, 18));
         this.add(lblItemName);
 
         lblItemPrice = new JLabel("￥" + item.getPrice());
@@ -71,7 +73,7 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
         textFieldNumInput.setVisible(false);
 
         sl_micp = new SpringLayout();
-        this.setBorder(BorderFactory.createDashedBorder(Color.LIGHT_GRAY, 2, 16, 1, true));
+        this.setBorder(BorderFactory.createDashedBorder(Color.LIGHT_GRAY, 2, 1, 1, true));
         this.setLayout(sl_micp);
 
         btnMinus.addActionListener(this);
@@ -128,27 +130,28 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
         if (e.getActionCommand() == "-") {
             minusOne();
             zeroCheck();
+            setItemNum();
         } else if (e.getActionCommand() == "+") {
             addOne();
             zeroCheck();
+            setItemNum();
         }
     }
 
     @Override
     public void removeUpdate(DocumentEvent e) {
-        System.out.println("numText remove.");
     }
 
     @Override
     public void insertUpdate(DocumentEvent e) {
-        System.out.println("numText insert.");
         inputCheck();
+        setItemNum();
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
-        System.out.println("numText changed.");
         emptyCheck();
+        setItemNum();
     }
 
     @Override
@@ -160,13 +163,13 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
     public void focusLost(FocusEvent e) {
         emptyCheck();
         zeroCheck();
+        setItemNum();
     }
 
     void inputCheck() {
         String text = textFieldNumInput.getText();
-        // System.out.println(text);
         if (text.matches("0[\\d]")) {
-            System.out.println("numText matches 0*");
+            // System.out.println("numText matches 0*");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -174,7 +177,7 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
                 }
             }).start();
         } else if (!text.matches("[1-9]?[\\d]")) {
-            System.out.println("numText input Error.");
+            // System.out.println("numText input Error.");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -187,7 +190,7 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
     void emptyCheck() {
         String text = textFieldNumInput.getText();
         if (text.equals("")) {
-            System.out.println("numText empty");
+            // System.out.println("numText empty");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -204,7 +207,7 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
         if (Integer.parseInt(text) == 0) {
             btnMinus.setVisible(false);
             textFieldNumInput.setVisible(false);
-            this.setBorder(BorderFactory.createDashedBorder(Color.LIGHT_GRAY, 2, 16, 1, true));
+            this.setBorder(BorderFactory.createDashedBorder(Color.LIGHT_GRAY, 2, 1, 1, true));
         } else {
             btnMinus.setVisible(true);
             textFieldNumInput.setVisible(true);
@@ -215,6 +218,9 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
     void addOne() {
         String text = textFieldNumInput.getText();
         int beforeNum = Integer.parseInt(text);
+        if (beforeNum == 99) {
+            return;
+        }
         textFieldNumInput.setText("" + (beforeNum + 1));
     }
 
@@ -229,16 +235,27 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
     }
 
     void setZero() {
-        System.out.println("numText setZero");
         new Thread(new Runnable() {
             @Override
             public void run() {
                 textFieldNumInput.setText("0");
             }
         }).start();
-        this.setBorder(BorderFactory.createDashedBorder(Color.LIGHT_GRAY, 2, 16, 1, true));
+        this.setBorder(BorderFactory.createDashedBorder(Color.LIGHT_GRAY, 2, 1, 1, true));
         btnMinus.setVisible(false);
         textFieldNumInput.setVisible(false);
+    }
+
+    MenuItem getItem() {
+        return item;
+    }
+
+    int getNumFromText() {
+        return Integer.parseInt(textFieldNumInput.getText());
+    }
+
+    private void setItemNum() {
+        item.setNum(getNumFromText());
     }
 
 }

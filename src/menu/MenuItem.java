@@ -2,7 +2,7 @@ package menu;
 
 public class MenuItem {
 
-	private int code;
+	private int code, num;
 	private String name, sort;
 	private double price;
 
@@ -14,6 +14,7 @@ public class MenuItem {
 			sort = "Food";
 		else
 			sort = "Drink";
+		this.num = 0;
 	}
 
 	public int getCode() {
@@ -30,6 +31,14 @@ public class MenuItem {
 
 	public String getSort() {
 		return sort;
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
 	}
 
 }

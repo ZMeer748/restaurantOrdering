@@ -17,6 +17,8 @@ import javax.swing.UIManager;
 
 import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
 
+import order.Order;
+
 public class UserInterface implements ActionListener {
 
 	private JFrame frame;
@@ -24,12 +26,13 @@ public class UserInterface implements ActionListener {
 
 	JLabel lblMenu, lblPleaseOrdering;
 	MenuScrollPane menuScrollPane;
-	JButton btnSubmit, btnReset;
+	JButton btnSubmit, btnReset, btnAskNumAdd, btnAskNumMinus;
+	AskNumPanel askNumPanel;
 
 	SpringLayout sl_menuPanel;
 
-	SpringLayout.Constraints menuPanelCons, lblMenuCons, lblPleaseOrderingCons, menuScrollPaneCons, btnSubmitCons,
-			btnResetCons;
+	SpringLayout.Constraints mainPanelCons, lblMenuCons, lblPleaseOrderingCons, menuScrollPaneCons, btnSubmitCons,
+			btnResetCons, askNumPanelCons;
 
 	final Spring defaultNORTH = Spring.constant(10), defaultWEST = Spring.constant(10);
 
@@ -87,11 +90,14 @@ public class UserInterface implements ActionListener {
 		menuScrollPane = new MenuScrollPane();
 		mainPanel.add(menuScrollPane);
 
+		// 提交与重置按钮
 		btnSubmit = new JButton("提交");
 		btnSubmit.setFont(new Font("微软雅黑", Font.BOLD, 18));
 		btnSubmit.setForeground(Color.WHITE);
 		btnSubmit.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.lightBlue));
 		mainPanel.add(btnSubmit);
+		btnSubmit.addActionListener(this);
+		btnSubmit.setActionCommand("Submit");
 
 		btnReset = new JButton("重置");
 		btnReset.setFont(new Font("微软雅黑", Font.BOLD, 18));
@@ -101,33 +107,38 @@ public class UserInterface implements ActionListener {
 		btnReset.addActionListener(this);
 		btnReset.setActionCommand("Reset");
 
-		// Layout Setting...
+		askNumPanel = new AskNumPanel();
+		mainPanel.add(askNumPanel);
+
+		// --------------------------Layout Setting...--------------------------
 		sl_menuPanel = new SpringLayout();
 		mainPanel.setLayout(sl_menuPanel);
 
+		// 定义各个 Constraints
 		lblMenuCons = sl_menuPanel.getConstraints(lblMenu);
 		lblPleaseOrderingCons = sl_menuPanel.getConstraints(lblPleaseOrdering);
 		menuScrollPaneCons = sl_menuPanel.getConstraints(menuScrollPane);
-		menuPanelCons = sl_menuPanel.getConstraints(mainPanel);
+		mainPanelCons = sl_menuPanel.getConstraints(mainPanel);
 		btnSubmitCons = sl_menuPanel.getConstraints(btnSubmit);
 		btnResetCons = sl_menuPanel.getConstraints(btnReset);
+		askNumPanelCons = sl_menuPanel.getConstraints(askNumPanel);
 
+		// 左上标签
 		lblMenuCons.setConstraint(SpringLayout.WEST, defaultWEST);
 		lblMenuCons.setConstraint(SpringLayout.NORTH, defaultNORTH);
 
 		lblPleaseOrderingCons.setX(Spring.sum(lblMenuCons.getConstraint(SpringLayout.EAST), Spring.constant(10)));
 		lblPleaseOrderingCons.setConstraint(SpringLayout.SOUTH, lblMenuCons.getConstraint(SpringLayout.SOUTH));
 
+		// 菜单滚动面板
 		menuScrollPaneCons.setConstraint(SpringLayout.WEST, defaultWEST);
 		menuScrollPaneCons.setConstraint(SpringLayout.NORTH,
 				Spring.sum(lblMenuCons.getConstraint(SpringLayout.SOUTH), Spring.constant(10)));
 		menuScrollPaneCons.setWidth(Spring.constant(600));
 
-		menuPanelCons.setConstraint(SpringLayout.EAST,
-				Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.EAST), Spring.constant(10)));
-
 		menuScrollPane.setLayouts(menuScrollPaneCons);
 
+		// 提交与重置按钮
 		btnSubmitCons.setConstraint(SpringLayout.EAST,
 				Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.EAST), Spring.constant(-3)));
 		btnSubmitCons.setConstraint(SpringLayout.NORTH,
@@ -137,8 +148,17 @@ public class UserInterface implements ActionListener {
 				Spring.sum(btnSubmitCons.getConstraint(SpringLayout.WEST), Spring.constant(-10)));
 		btnResetCons.setConstraint(SpringLayout.NORTH, btnSubmitCons.getConstraint(SpringLayout.NORTH));
 
-		menuPanelCons.setConstraint(SpringLayout.SOUTH,
+		//
+		askNumPanelCons.setConstraint(SpringLayout.NORTH, btnSubmitCons.getConstraint(SpringLayout.NORTH));
+		askNumPanelCons.setConstraint(SpringLayout.WEST, menuScrollPaneCons.getConstraint(SpringLayout.WEST));
+		System.out.println(askNumPanelCons.getWidth().getValue());
+		System.out.println(askNumPanelCons.getHeight().getValue());
+
+		// 主面板的 SOUTH 与 EAST
+		mainPanelCons.setConstraint(SpringLayout.SOUTH,
 				Spring.sum(btnSubmitCons.getConstraint(SpringLayout.SOUTH), Spring.constant(10)));
+		mainPanelCons.setConstraint(SpringLayout.EAST,
+				Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.EAST), Spring.constant(10)));
 
 	}
 
@@ -147,7 +167,13 @@ public class UserInterface implements ActionListener {
 		if (e.getActionCommand().equals("Reset")) {
 			System.out.println("Reset");
 			menuScrollPane.resetAllNumTextField();
+		} else if (e.getActionCommand().equals("Submit")) {
+			System.out.println("Submit");
+			System.out.println("CusNum: " + Order.getNumOfCustomer());
+			for (String[] str : Order.toTableString()) {
+				System.out.println(str[0] + "\t" + str[1] + "\t" + str[2]);
+			}
 		}
 	}
-	
+
 }

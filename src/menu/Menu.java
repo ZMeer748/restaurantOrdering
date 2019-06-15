@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import org.junit.Test;
 
@@ -19,7 +18,7 @@ public class Menu {
 	public static void main(String[] args) {
 		getList_test();
 	}
-	
+
 	static {
 		getMenuContent("menu.txt");
 	}
@@ -59,7 +58,7 @@ public class Menu {
 		return itemMap.size();
 	}
 
-	static public Set<Entry<Integer, MenuItem>> getEntrySet() {
+	static public Set<Map.Entry<Integer, MenuItem>> getEntrySet() {
 		return itemMap.entrySet();
 	}
 
