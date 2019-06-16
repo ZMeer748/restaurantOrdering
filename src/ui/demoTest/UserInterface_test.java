@@ -36,7 +36,7 @@ public class UserInterface_test {
 		try {
 			org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper.launchBeautyEyeLNF();
 		} catch (Exception e) {
-			// TODO exception
+			e.printStackTrace();
 		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

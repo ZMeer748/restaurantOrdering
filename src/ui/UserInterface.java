@@ -30,13 +30,13 @@ public class UserInterface implements ActionListener {
 	private JFrame frame;
 	static JPanel mainPanel;
 
+	static SpringLayout sl_mainPanel;
+
+	// --------------------------- 左侧 --------------------------------------
 	static JLabel lblMenu, lblPleaseOrdering;
 	static MenuScrollPane menuScrollPane;
 	static JButton btnSubmit, btnReset, btnAskNumAdd, btnAskNumMinus;
 	static AskNumPanel askNumPanel;
-
-	static SpringLayout sl_menuPanel;
-
 	static SpringLayout.Constraints mainPanelCons, lblMenuCons, lblPleaseOrderingCons, menuScrollPaneCons,
 			btnSubmitCons, btnResetCons, askNumPanelCons;
 
@@ -63,10 +63,11 @@ public class UserInterface implements ActionListener {
 	 */
 	public static void main(String[] args) {
 		try {
+			// 导入 BeautyEye 皮肤
 			org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper.launchBeautyEyeLNF();
 			UIManager.put("RootPane.setupButtonVisible", false);
 		} catch (Exception e) {
-			// TODO exception
+			e.printStackTrace();
 		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -103,6 +104,7 @@ public class UserInterface implements ActionListener {
 
 		// ----------------------- 面板左侧内容 ----------------------------------
 
+		// 左上标签
 		lblMenu = new JLabel("MENU");
 		lblMenu.setFont(new Font("微软雅黑", Font.BOLD, 32));
 		mainPanel.add(lblMenu);
@@ -111,6 +113,7 @@ public class UserInterface implements ActionListener {
 		lblPleaseOrdering.setFont(new Font("微软雅黑", Font.PLAIN, 16));
 		mainPanel.add(lblPleaseOrdering);
 
+		// 菜单滚动面板
 		menuScrollPane = new MenuScrollPane();
 		mainPanel.add(menuScrollPane);
 
@@ -131,15 +134,18 @@ public class UserInterface implements ActionListener {
 		btnReset.addActionListener(this);
 		btnReset.setActionCommand("Reset");
 
+		// 人数面板
 		askNumPanel = new AskNumPanel();
 		mainPanel.add(askNumPanel);
 
 		// ----------------------- 面板右侧内容 ----------------------------------
 
+		// 上部标签
 		lblYourChoice = new JLabel("Your Choice");
 		lblYourChoice.setFont(new Font("微软雅黑", Font.PLAIN, 16));
 		mainPanel.add(lblYourChoice);
 
+		// 表格面板，以滚动面板为容器
 		orderTableScrollPane = new JScrollPane();
 		mainPanel.add(orderTableScrollPane);
 
@@ -152,29 +158,35 @@ public class UserInterface implements ActionListener {
 				return false;
 			}
 		};
+		orderTable.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		orderTableScrollPane.setViewportView(orderTable);
 
-		textAreaRemarksScrollPane = new JScrollPane();
-		mainPanel.add(textAreaRemarksScrollPane);
-
+		// 备注标签
 		lblRemarks = new JLabel("Remarks");
 		lblRemarks.setFont(new Font("微软雅黑", Font.PLAIN, 16));
 		mainPanel.add(lblRemarks);
+
+		// 备注文本框，以滚动面板为容器
+		textAreaRemarksScrollPane = new JScrollPane();
+		mainPanel.add(textAreaRemarksScrollPane);
 
 		textAreaRemarks = new JTextArea();
 		textAreaRemarks.setFont(new Font("微软雅黑", Font.PLAIN, 16));
 		textAreaRemarksScrollPane.setViewportView(textAreaRemarks);
 
+		// 总额标签
 		lblTotal = new JLabel("Total");
 		lblTotal.setFont(new Font("微软雅黑", Font.BOLD, 18));
 		mainPanel.add(lblTotal);
 
+		// 总额文本框
 		textFieldTotal = new JTextField();
 		textFieldTotal.setFont(new Font("微软雅黑", Font.PLAIN, 18));
 		textFieldTotal.setHorizontalAlignment(JTextField.CENTER);
 		textFieldTotal.setEditable(false);
 		mainPanel.add(textFieldTotal);
 
+		// 确认订单按钮
 		btnConfirm = new JButton("确认订单");
 		btnConfirm.setFont(new Font("微软雅黑", Font.BOLD, 18));
 		btnConfirm.setForeground(Color.WHITE);
@@ -183,25 +195,25 @@ public class UserInterface implements ActionListener {
 		setBtnConfirmVisible(false);
 
 		// ---------------------------- 面板布局 --------------------------------
-		sl_menuPanel = new SpringLayout();
-		mainPanel.setLayout(sl_menuPanel);
+		sl_mainPanel = new SpringLayout();
+		mainPanel.setLayout(sl_mainPanel);
 
 		// 定义各个 Constraints
-		lblMenuCons = sl_menuPanel.getConstraints(lblMenu);
-		lblPleaseOrderingCons = sl_menuPanel.getConstraints(lblPleaseOrdering);
-		menuScrollPaneCons = sl_menuPanel.getConstraints(menuScrollPane);
-		mainPanelCons = sl_menuPanel.getConstraints(mainPanel);
-		btnSubmitCons = sl_menuPanel.getConstraints(btnSubmit);
-		btnResetCons = sl_menuPanel.getConstraints(btnReset);
-		askNumPanelCons = sl_menuPanel.getConstraints(askNumPanel);
+		lblMenuCons = sl_mainPanel.getConstraints(lblMenu);
+		lblPleaseOrderingCons = sl_mainPanel.getConstraints(lblPleaseOrdering);
+		menuScrollPaneCons = sl_mainPanel.getConstraints(menuScrollPane);
+		mainPanelCons = sl_mainPanel.getConstraints(mainPanel);
+		btnSubmitCons = sl_mainPanel.getConstraints(btnSubmit);
+		btnResetCons = sl_mainPanel.getConstraints(btnReset);
+		askNumPanelCons = sl_mainPanel.getConstraints(askNumPanel);
 
-		lblYourChoiceCons = sl_menuPanel.getConstraints(lblYourChoice);
-		orderTableScrollPaneCons = sl_menuPanel.getConstraints(orderTableScrollPane);
-		lblRemarksCons = sl_menuPanel.getConstraints(lblRemarks);
-		textAreaRemarksScrollPaneCons = sl_menuPanel.getConstraints(textAreaRemarksScrollPane);
-		lblTotalCons = sl_menuPanel.getConstraints(lblTotal);
-		textFieldTotalCons = sl_menuPanel.getConstraints(textFieldTotal);
-		btnConfirmCons = sl_menuPanel.getConstraints(btnConfirm);
+		lblYourChoiceCons = sl_mainPanel.getConstraints(lblYourChoice);
+		orderTableScrollPaneCons = sl_mainPanel.getConstraints(orderTableScrollPane);
+		lblRemarksCons = sl_mainPanel.getConstraints(lblRemarks);
+		textAreaRemarksScrollPaneCons = sl_mainPanel.getConstraints(textAreaRemarksScrollPane);
+		lblTotalCons = sl_mainPanel.getConstraints(lblTotal);
+		textFieldTotalCons = sl_mainPanel.getConstraints(textFieldTotal);
+		btnConfirmCons = sl_mainPanel.getConstraints(btnConfirm);
 
 		// -------------------------- 左侧面板布局 -------------------------------
 		// 左上标签
@@ -235,19 +247,23 @@ public class UserInterface implements ActionListener {
 
 		// -------------------------- 右侧面板布局 -------------------------------
 
+		// 上部标签布局
 		lblYourChoiceCons.setX(Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.EAST), Spring.constant(10)));
 		lblYourChoiceCons.setY(lblPleaseOrderingCons.getY());
 
+		// 表格面板布局
 		orderTableScrollPaneCons.setConstraint(SpringLayout.NORTH,
 				Spring.sum(lblYourChoiceCons.getConstraint(SpringLayout.SOUTH), Spring.constant(10)));
 		orderTableScrollPaneCons.setConstraint(SpringLayout.WEST,
 				Spring.sum(lblYourChoiceCons.getConstraint(SpringLayout.WEST), Spring.constant(0)));
 
+		// 备注标签布局
 		lblRemarksCons.setConstraint(SpringLayout.NORTH,
 				Spring.sum(orderTableScrollPaneCons.getConstraint(SpringLayout.SOUTH), Spring.constant(6)));
 		lblRemarksCons.setConstraint(SpringLayout.WEST,
 				Spring.sum(orderTableScrollPaneCons.getConstraint(SpringLayout.WEST), Spring.constant(0)));
 
+		// 备注面板布局
 		textAreaRemarksScrollPaneCons.setConstraint(SpringLayout.NORTH,
 				Spring.sum(lblRemarksCons.getConstraint(SpringLayout.SOUTH), Spring.constant(6)));
 		textAreaRemarksScrollPaneCons.setConstraint(SpringLayout.WEST,
@@ -256,17 +272,20 @@ public class UserInterface implements ActionListener {
 				Spring.sum(orderTableScrollPaneCons.getConstraint(SpringLayout.EAST), Spring.constant(0)));
 		textAreaRemarksScrollPaneCons.setHeight(Spring.constant(100));
 
+		// 确认订单按钮布局
 		btnConfirmCons.setConstraint(SpringLayout.EAST,
 				Spring.sum(orderTableScrollPaneCons.getConstraint(SpringLayout.EAST), Spring.constant(0)));
 		btnConfirmCons.setConstraint(SpringLayout.NORTH,
 				Spring.sum(textAreaRemarksScrollPaneCons.getConstraint(SpringLayout.SOUTH), Spring.constant(10)));
 
+		// 总额文本框布局
 		textFieldTotalCons.setConstraint(SpringLayout.EAST,
 				Spring.sum(btnConfirmCons.getConstraint(SpringLayout.WEST), Spring.constant(-10)));
 		textFieldTotalCons.setWidth(Spring.constant(100));
 		textFieldTotalCons.setConstraint(SpringLayout.NORTH,
 				Spring.sum(btnConfirmCons.getConstraint(SpringLayout.NORTH), Spring.constant(2)));
 
+		// 总额标签布局
 		lblTotalCons.setConstraint(SpringLayout.EAST,
 				Spring.sum(textFieldTotalCons.getConstraint(SpringLayout.WEST), Spring.constant(-10)));
 		lblTotalCons.setConstraint(SpringLayout.NORTH,
@@ -286,6 +305,7 @@ public class UserInterface implements ActionListener {
 
 	}
 
+	// 重置、提交与确认订单按钮的监听响应
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Reset")) {
@@ -304,6 +324,7 @@ public class UserInterface implements ActionListener {
 		}
 	}
 
+	// 刷新表格内容
 	static void fillTable() {
 		int i = 0;
 		for (; i < tableContainers.length; i++) {
@@ -320,23 +341,20 @@ public class UserInterface implements ActionListener {
 		}
 	}
 
+	// 设置总额文本框的内容
 	static void setTotal() {
 		textFieldTotal.setText("" + Order.getTotalCost(false));
 	}
 
+	// 清除总额文本框的内容
 	public static void totalClear() {
 		textFieldTotal.setText("");
 	}
 
+	// 设置确认订单按钮是否可见
 	public static void setBtnConfirmVisible(boolean isVisible) {
 		fillTable();
 		btnConfirm.setVisible(isVisible);
-	}
-
-	public static void autoSubmit() {
-		setTotal();
-		fillTable();
-		setBtnConfirmVisible(true);
 	}
 
 }
