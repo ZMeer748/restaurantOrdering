@@ -6,8 +6,11 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,7 +28,7 @@ import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
 import menu.Menu;
 import order.Order;
 
-public class UserInterface implements ActionListener {
+public class UserInterface implements ActionListener, ItemListener {
 
 	private JFrame frame;
 	static JPanel mainPanel;
@@ -37,8 +40,10 @@ public class UserInterface implements ActionListener {
 	static MenuScrollPane menuScrollPane;
 	static JButton btnSubmit, btnReset, btnAskNumAdd, btnAskNumMinus;
 	static AskNumPanel askNumPanel;
+	static JComboBox<String> comboBoxCalStrategy;
+
 	static SpringLayout.Constraints mainPanelCons, lblMenuCons, lblPleaseOrderingCons, menuScrollPaneCons,
-			btnSubmitCons, btnResetCons, askNumPanelCons;
+			btnSubmitCons, btnResetCons, askNumPanelCons, comboBoxCalStrategyCons;
 
 	static final Spring defaultNORTH = Spring.constant(10), defaultWEST = Spring.constant(10);
 
@@ -56,6 +61,7 @@ public class UserInterface implements ActionListener {
 
 	static DefaultTableModel orderTableModel;
 
+	static String[] calStrategy = { "nonVIP", "VIP" };
 	static String[][] tableContainers;
 
 	/**
@@ -112,6 +118,13 @@ public class UserInterface implements ActionListener {
 		lblPleaseOrdering = new JLabel("Please ordering.");
 		lblPleaseOrdering.setFont(new Font("微软雅黑", Font.PLAIN, 16));
 		mainPanel.add(lblPleaseOrdering);
+
+		// 计算策略下拉菜单
+		comboBoxCalStrategy = new JComboBox<>(calStrategy);
+		comboBoxCalStrategy.setFont(new Font("微软雅黑", Font.PLAIN, 16));
+		comboBoxCalStrategy.setSelectedIndex(0);
+		mainPanel.add(comboBoxCalStrategy);
+		comboBoxCalStrategy.addItemListener(this);
 
 		// 菜单滚动面板
 		menuScrollPane = new MenuScrollPane();
@@ -206,6 +219,7 @@ public class UserInterface implements ActionListener {
 		btnSubmitCons = sl_mainPanel.getConstraints(btnSubmit);
 		btnResetCons = sl_mainPanel.getConstraints(btnReset);
 		askNumPanelCons = sl_mainPanel.getConstraints(askNumPanel);
+		comboBoxCalStrategyCons = sl_mainPanel.getConstraints(comboBoxCalStrategy);
 
 		lblYourChoiceCons = sl_mainPanel.getConstraints(lblYourChoice);
 		orderTableScrollPaneCons = sl_mainPanel.getConstraints(orderTableScrollPane);
@@ -244,6 +258,11 @@ public class UserInterface implements ActionListener {
 		// 顾客人数面板
 		askNumPanelCons.setConstraint(SpringLayout.NORTH, btnSubmitCons.getConstraint(SpringLayout.NORTH));
 		askNumPanelCons.setConstraint(SpringLayout.WEST, menuScrollPaneCons.getConstraint(SpringLayout.WEST));
+
+		// 计算策略下拉菜单布局
+		comboBoxCalStrategyCons.setConstraint(SpringLayout.SOUTH, lblMenuCons.getConstraint(SpringLayout.SOUTH));
+		comboBoxCalStrategyCons.setConstraint(SpringLayout.EAST,
+				Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.EAST), Spring.constant(-10)));
 
 		// -------------------------- 右侧面板布局 -------------------------------
 
@@ -341,9 +360,17 @@ public class UserInterface implements ActionListener {
 		}
 	}
 
+	static boolean getIsVIPFromComboBox() {
+		System.out.println(comboBoxCalStrategy.getSelectedItem().toString().equals("VIP"));
+		if (comboBoxCalStrategy.getSelectedItem().toString().equals("VIP"))
+			return true;
+		else
+			return false;
+	}
+
 	// 设置总额文本框的内容
 	static void setTotal() {
-		textFieldTotal.setText("" + Order.getTotalCost(false));
+		textFieldTotal.setText("" + Order.getTotalCost(getIsVIPFromComboBox()));
 	}
 
 	// 清除总额文本框的内容
@@ -355,6 +382,13 @@ public class UserInterface implements ActionListener {
 	public static void setBtnConfirmVisible(boolean isVisible) {
 		fillTable();
 		btnConfirm.setVisible(isVisible);
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		totalClear();
+		fillTable();
+		setBtnConfirmVisible(false);
 	}
 
 }
