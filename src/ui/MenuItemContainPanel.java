@@ -146,12 +146,16 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
     public void insertUpdate(DocumentEvent e) {
         inputCheck();
         setItemNum();
+        UserInterface.setBtnConfirmVisible(false);
+        UserInterface.totalClear();
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
         emptyCheck();
         setItemNum();
+        UserInterface.setBtnConfirmVisible(false);
+        UserInterface.totalClear();
     }
 
     @Override
@@ -164,6 +168,8 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
         emptyCheck();
         zeroCheck();
         setItemNum();
+        UserInterface.setBtnConfirmVisible(false);
+        UserInterface.totalClear();
     }
 
     void inputCheck() {

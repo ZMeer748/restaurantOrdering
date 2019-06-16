@@ -22,40 +22,41 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
 
+import menu.Menu;
 import order.Order;
 
 public class UserInterface implements ActionListener {
 
 	private JFrame frame;
-	JPanel mainPanel;
+	static JPanel mainPanel;
 
-	JLabel lblMenu, lblPleaseOrdering;
-	MenuScrollPane menuScrollPane;
-	JButton btnSubmit, btnReset, btnAskNumAdd, btnAskNumMinus;
-	AskNumPanel askNumPanel;
+	static JLabel lblMenu, lblPleaseOrdering;
+	static MenuScrollPane menuScrollPane;
+	static JButton btnSubmit, btnReset, btnAskNumAdd, btnAskNumMinus;
+	static AskNumPanel askNumPanel;
 
-	SpringLayout sl_menuPanel;
+	static SpringLayout sl_menuPanel;
 
-	SpringLayout.Constraints mainPanelCons, lblMenuCons, lblPleaseOrderingCons, menuScrollPaneCons, btnSubmitCons,
-			btnResetCons, askNumPanelCons;
+	static SpringLayout.Constraints mainPanelCons, lblMenuCons, lblPleaseOrderingCons, menuScrollPaneCons,
+			btnSubmitCons, btnResetCons, askNumPanelCons;
 
-	final Spring defaultNORTH = Spring.constant(10), defaultWEST = Spring.constant(10);
+	static final Spring defaultNORTH = Spring.constant(10), defaultWEST = Spring.constant(10);
 
 	// --------------------------- 右侧 --------------------------------------
-	JLabel lblYourChoice, lblTotal, lblRemarks;
-	JScrollPane orderTableScrollPane, textAreaRemarksScrollPane;
-	JTable orderTable;
-	String[] orderTableColumnsTitle = { "名称", "价格", "数量" };
-	JTextField textFieldTotal;
-	JTextArea textAreaRemarks;
-	JButton btnConfirm;
+	static JLabel lblYourChoice, lblTotal, lblRemarks;
+	static JScrollPane orderTableScrollPane, textAreaRemarksScrollPane;
+	static JTable orderTable;
+	static String[] orderTableColumnsTitle = { "名称", "价格", "数量" };
+	static JTextField textFieldTotal;
+	static JTextArea textAreaRemarks;
+	static JButton btnConfirm;
 
-	SpringLayout.Constraints lblYourChoiceCons, orderTableScrollPaneCons, lblRemarksCons, textAreaRemarksScrollPaneCons,
-			lblTotalCons, textFieldTotalCons, btnConfirmCons;
+	static SpringLayout.Constraints lblYourChoiceCons, orderTableScrollPaneCons, lblRemarksCons,
+			textAreaRemarksScrollPaneCons, lblTotalCons, textFieldTotalCons, btnConfirmCons;
 
-	DefaultTableModel orderTableModel;
+	static DefaultTableModel orderTableModel;
 
-	String[][] tableContainers;
+	static String[][] tableContainers;
 
 	/**
 	 * Launch the application.
@@ -142,7 +143,7 @@ public class UserInterface implements ActionListener {
 		orderTableScrollPane = new JScrollPane();
 		mainPanel.add(orderTableScrollPane);
 
-		tableContainers = new String[30][3];
+		tableContainers = new String[Menu.getNum() + 10][3];
 		orderTableModel = new DefaultTableModel(tableContainers, orderTableColumnsTitle);
 		orderTable = new JTable(orderTableModel) {
 			private static final long serialVersionUID = 1L;
@@ -161,14 +162,17 @@ public class UserInterface implements ActionListener {
 		mainPanel.add(lblRemarks);
 
 		textAreaRemarks = new JTextArea();
+		textAreaRemarks.setFont(new Font("微软雅黑", Font.PLAIN, 16));
 		textAreaRemarksScrollPane.setViewportView(textAreaRemarks);
 
 		lblTotal = new JLabel("Total");
-		lblTotal.setFont(new Font("微软雅黑", Font.PLAIN, 18));
+		lblTotal.setFont(new Font("微软雅黑", Font.BOLD, 18));
 		mainPanel.add(lblTotal);
 
 		textFieldTotal = new JTextField();
 		textFieldTotal.setFont(new Font("微软雅黑", Font.PLAIN, 18));
+		textFieldTotal.setHorizontalAlignment(JTextField.CENTER);
+		textFieldTotal.setEditable(false);
 		mainPanel.add(textFieldTotal);
 
 		btnConfirm = new JButton("确认订单");
@@ -176,6 +180,7 @@ public class UserInterface implements ActionListener {
 		btnConfirm.setForeground(Color.WHITE);
 		btnConfirm.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.red));
 		mainPanel.add(btnConfirm);
+		setBtnConfirmVisible(false);
 
 		// ---------------------------- 面板布局 --------------------------------
 		sl_menuPanel = new SpringLayout();
@@ -260,27 +265,21 @@ public class UserInterface implements ActionListener {
 				Spring.sum(btnConfirmCons.getConstraint(SpringLayout.WEST), Spring.constant(-10)));
 		textFieldTotalCons.setWidth(Spring.constant(100));
 		textFieldTotalCons.setConstraint(SpringLayout.NORTH,
-				Spring.sum(btnConfirmCons.getConstraint(SpringLayout.NORTH), Spring.constant(0)));
+				Spring.sum(btnConfirmCons.getConstraint(SpringLayout.NORTH), Spring.constant(2)));
 
 		lblTotalCons.setConstraint(SpringLayout.EAST,
 				Spring.sum(textFieldTotalCons.getConstraint(SpringLayout.WEST), Spring.constant(-10)));
 		lblTotalCons.setConstraint(SpringLayout.NORTH,
-				Spring.sum(btnConfirmCons.getConstraint(SpringLayout.NORTH), Spring.constant(0)));
+				Spring.sum(btnConfirmCons.getConstraint(SpringLayout.NORTH), Spring.constant(6)));
 
 		// --------------------------- 主面板的 SOUTH 与 EAST --------------------
 
-		// Spring confirmCornerWidthSpring =
-		// Spring.sum(btnConfirmCons.getConstraint(SpringLayout.EAST),
-		// Spring.constant(-lblTotalCons.getConstraint(SpringLayout.WEST).getValue()));
+		Spring confirmCornerWidthSpring = Spring.sum(btnConfirmCons.getWidth(), Spring.constant(200));
 
 		Spring maxSouthSpring = Spring.max(btnConfirmCons.getConstraint(SpringLayout.SOUTH),
 				btnSubmitCons.getConstraint(SpringLayout.SOUTH));
 		Spring maxEastSpring = Spring.max(orderTableScrollPaneCons.getConstraint(SpringLayout.EAST),
-				lblYourChoiceCons.getConstraint(SpringLayout.EAST));
-		// Spring maxEastSpring =
-		// Spring.max(orderTableScrollPaneCons.getConstraint(SpringLayout.EAST),
-		// Spring.sum(lblYourChoiceCons.getConstraint(SpringLayout.WEST),
-		// confirmCornerWidthSpring));
+				Spring.sum(lblYourChoiceCons.getConstraint(SpringLayout.WEST), confirmCornerWidthSpring));
 
 		mainPanelCons.setConstraint(SpringLayout.SOUTH, Spring.sum(maxSouthSpring, Spring.constant(10)));
 		mainPanelCons.setConstraint(SpringLayout.EAST, Spring.sum(maxEastSpring, Spring.constant(10)));
@@ -293,24 +292,51 @@ public class UserInterface implements ActionListener {
 			System.out.println("Reset");
 			menuScrollPane.resetAllNumTextField();
 			askNumPanel.setOne();
+			totalClear();
+			fillTable();
+			setBtnConfirmVisible(false);
 		} else if (e.getActionCommand().equals("Submit")) {
 			System.out.println("Submit");
 			System.out.println("CusNum: " + Order.getNumOfCustomer());
-			int i = 0;
-			for (; i < tableContainers.length; i++) {
-				orderTableModel.setValueAt("", i, 0);
-				orderTableModel.setValueAt("", i, 1);
-				orderTableModel.setValueAt("", i, 2);
-			}
-			i = 0;
-			for (String[] str : Order.toTableString()) {
-				// System.out.println(str[0] + "\t" + str[1] + "\t" + str[2]);
-				orderTableModel.setValueAt(str[0], i, 0);
-				orderTableModel.setValueAt(str[1], i, 1);
-				orderTableModel.setValueAt(str[2], i, 2);
-				i++;
-			}
+			setTotal();
+			fillTable();
+			setBtnConfirmVisible(true);
 		}
+	}
+
+	static void fillTable() {
+		int i = 0;
+		for (; i < tableContainers.length; i++) {
+			orderTableModel.setValueAt("", i, 0);
+			orderTableModel.setValueAt("", i, 1);
+			orderTableModel.setValueAt("", i, 2);
+		}
+		i = 0;
+		for (String[] str : Order.toTableString()) {
+			orderTableModel.setValueAt(str[0], i, 0);
+			orderTableModel.setValueAt(str[1], i, 1);
+			orderTableModel.setValueAt(str[2], i, 2);
+			i++;
+		}
+	}
+
+	static void setTotal() {
+		textFieldTotal.setText("" + Order.getTotalCost(false));
+	}
+
+	public static void totalClear() {
+		textFieldTotal.setText("");
+	}
+
+	public static void setBtnConfirmVisible(boolean isVisible) {
+		fillTable();
+		btnConfirm.setVisible(isVisible);
+	}
+
+	public static void autoSubmit() {
+		setTotal();
+		fillTable();
+		setBtnConfirmVisible(true);
 	}
 
 }

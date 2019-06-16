@@ -10,9 +10,9 @@ import menu.MenuItem;
  */
 public class Order {
 
-    static int numOfCustomer = 1;
+    private static int numOfCustomer = 1;
 
-    static double getTotalCost(boolean isVIP) {
+    public static double getTotalCost(boolean isVIP) {
         double cusCost = numOfCustomer * 2;
         double orderCost = 0;
         for (Entry<Integer, MenuItem> entry : Menu.getEntrySet()) {

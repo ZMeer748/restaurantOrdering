@@ -107,12 +107,16 @@ public class AskNumPanel extends JPanel implements ActionListener, DocumentListe
     public void focusLost(FocusEvent e) {
         emptyCheck();
         setCustomersNum();
+        UserInterface.setBtnConfirmVisible(false);
+        UserInterface.totalClear();
     }
 
     @Override
     public void insertUpdate(DocumentEvent e) {
         inputCheck();
         setCustomersNum();
+        UserInterface.setBtnConfirmVisible(false);
+        UserInterface.totalClear();
 
     }
 
@@ -125,6 +129,8 @@ public class AskNumPanel extends JPanel implements ActionListener, DocumentListe
     public void changedUpdate(DocumentEvent e) {
         emptyCheck();
         setCustomersNum();
+        UserInterface.setBtnConfirmVisible(false);
+        UserInterface.totalClear();
     }
 
     void inputCheck() {
