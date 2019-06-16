@@ -15,14 +15,16 @@ public class Order {
     public static double getTotalCost(boolean isVIP) {
         double cusCost = numOfCustomer * 2;
         double orderCost = 0;
+        double total;
         for (Entry<Integer, MenuItem> entry : Menu.getEntrySet()) {
             orderCost += entry.getValue().getPrice() * entry.getValue().getNum();
         }
         if (isVIP) {
-            return (double) Math.round(((cusCost + orderCost) * 0.9 * 100) / 100);
+            total = (cusCost + orderCost) * 0.9;
         } else {
-            return (double) Math.round(((cusCost + orderCost) * 100) / 100);
+            total = cusCost + orderCost;
         }
+        return (double) (Math.round(total * 100) / 100.0);
     }
 
     public static String[][] toTableString() {
