@@ -11,9 +11,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.Spring;
 import javax.swing.SpringLayout;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 
 import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
 
@@ -35,6 +40,22 @@ public class UserInterface implements ActionListener {
 			btnResetCons, askNumPanelCons;
 
 	final Spring defaultNORTH = Spring.constant(10), defaultWEST = Spring.constant(10);
+
+	// --------------------------- 右侧 --------------------------------------
+	JLabel lblYourChoice, lblTotal, lblRemarks;
+	JScrollPane orderTableScrollPane, textAreaRemarksScrollPane;
+	JTable orderTable;
+	String[] orderTableColumnsTitle = { "名称", "价格", "数量" };
+	JTextField textFieldTotal;
+	JTextArea textAreaRemarks;
+	JButton btnConfirm;
+
+	SpringLayout.Constraints lblYourChoiceCons, orderTableScrollPaneCons, lblRemarksCons, textAreaRemarksScrollPaneCons,
+			lblTotalCons, textFieldTotalCons, btnConfirmCons;
+
+	DefaultTableModel orderTableModel;
+
+	String[][] tableContainers;
 
 	/**
 	 * Launch the application.
@@ -79,6 +100,8 @@ public class UserInterface implements ActionListener {
 		JPanel mainPanel = new JPanel();
 		frame.getContentPane().add(mainPanel);
 
+		// ----------------------- 面板左侧内容 ----------------------------------
+
 		lblMenu = new JLabel("MENU");
 		lblMenu.setFont(new Font("微软雅黑", Font.BOLD, 32));
 		mainPanel.add(lblMenu);
@@ -110,7 +133,51 @@ public class UserInterface implements ActionListener {
 		askNumPanel = new AskNumPanel();
 		mainPanel.add(askNumPanel);
 
-		// --------------------------Layout Setting...--------------------------
+		// ----------------------- 面板右侧内容 ----------------------------------
+
+		lblYourChoice = new JLabel("Your Choice");
+		lblYourChoice.setFont(new Font("微软雅黑", Font.PLAIN, 16));
+		mainPanel.add(lblYourChoice);
+
+		orderTableScrollPane = new JScrollPane();
+		mainPanel.add(orderTableScrollPane);
+
+		tableContainers = new String[30][3];
+		orderTableModel = new DefaultTableModel(tableContainers, orderTableColumnsTitle);
+		orderTable = new JTable(orderTableModel) {
+			private static final long serialVersionUID = 1L;
+
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		orderTableScrollPane.setViewportView(orderTable);
+
+		textAreaRemarksScrollPane = new JScrollPane();
+		mainPanel.add(textAreaRemarksScrollPane);
+
+		lblRemarks = new JLabel("Remarks");
+		lblRemarks.setFont(new Font("微软雅黑", Font.PLAIN, 16));
+		mainPanel.add(lblRemarks);
+
+		textAreaRemarks = new JTextArea();
+		textAreaRemarksScrollPane.setViewportView(textAreaRemarks);
+
+		lblTotal = new JLabel("Total");
+		lblTotal.setFont(new Font("微软雅黑", Font.PLAIN, 18));
+		mainPanel.add(lblTotal);
+
+		textFieldTotal = new JTextField();
+		textFieldTotal.setFont(new Font("微软雅黑", Font.PLAIN, 18));
+		mainPanel.add(textFieldTotal);
+
+		btnConfirm = new JButton("确认订单");
+		btnConfirm.setFont(new Font("微软雅黑", Font.BOLD, 18));
+		btnConfirm.setForeground(Color.WHITE);
+		btnConfirm.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.red));
+		mainPanel.add(btnConfirm);
+
+		// ---------------------------- 面板布局 --------------------------------
 		sl_menuPanel = new SpringLayout();
 		mainPanel.setLayout(sl_menuPanel);
 
@@ -123,6 +190,15 @@ public class UserInterface implements ActionListener {
 		btnResetCons = sl_menuPanel.getConstraints(btnReset);
 		askNumPanelCons = sl_menuPanel.getConstraints(askNumPanel);
 
+		lblYourChoiceCons = sl_menuPanel.getConstraints(lblYourChoice);
+		orderTableScrollPaneCons = sl_menuPanel.getConstraints(orderTableScrollPane);
+		lblRemarksCons = sl_menuPanel.getConstraints(lblRemarks);
+		textAreaRemarksScrollPaneCons = sl_menuPanel.getConstraints(textAreaRemarksScrollPane);
+		lblTotalCons = sl_menuPanel.getConstraints(lblTotal);
+		textFieldTotalCons = sl_menuPanel.getConstraints(textFieldTotal);
+		btnConfirmCons = sl_menuPanel.getConstraints(btnConfirm);
+
+		// -------------------------- 左侧面板布局 -------------------------------
 		// 左上标签
 		lblMenuCons.setConstraint(SpringLayout.WEST, defaultWEST);
 		lblMenuCons.setConstraint(SpringLayout.NORTH, defaultNORTH);
@@ -148,17 +224,66 @@ public class UserInterface implements ActionListener {
 				Spring.sum(btnSubmitCons.getConstraint(SpringLayout.WEST), Spring.constant(-10)));
 		btnResetCons.setConstraint(SpringLayout.NORTH, btnSubmitCons.getConstraint(SpringLayout.NORTH));
 
-		//
+		// 顾客人数面板
 		askNumPanelCons.setConstraint(SpringLayout.NORTH, btnSubmitCons.getConstraint(SpringLayout.NORTH));
 		askNumPanelCons.setConstraint(SpringLayout.WEST, menuScrollPaneCons.getConstraint(SpringLayout.WEST));
-		System.out.println(askNumPanelCons.getWidth().getValue());
-		System.out.println(askNumPanelCons.getHeight().getValue());
 
-		// 主面板的 SOUTH 与 EAST
-		mainPanelCons.setConstraint(SpringLayout.SOUTH,
-				Spring.sum(btnSubmitCons.getConstraint(SpringLayout.SOUTH), Spring.constant(10)));
-		mainPanelCons.setConstraint(SpringLayout.EAST,
-				Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.EAST), Spring.constant(10)));
+		// -------------------------- 右侧面板布局 -------------------------------
+
+		lblYourChoiceCons.setX(Spring.sum(menuScrollPaneCons.getConstraint(SpringLayout.EAST), Spring.constant(10)));
+		lblYourChoiceCons.setY(lblPleaseOrderingCons.getY());
+
+		orderTableScrollPaneCons.setConstraint(SpringLayout.NORTH,
+				Spring.sum(lblYourChoiceCons.getConstraint(SpringLayout.SOUTH), Spring.constant(10)));
+		orderTableScrollPaneCons.setConstraint(SpringLayout.WEST,
+				Spring.sum(lblYourChoiceCons.getConstraint(SpringLayout.WEST), Spring.constant(0)));
+
+		lblRemarksCons.setConstraint(SpringLayout.NORTH,
+				Spring.sum(orderTableScrollPaneCons.getConstraint(SpringLayout.SOUTH), Spring.constant(6)));
+		lblRemarksCons.setConstraint(SpringLayout.WEST,
+				Spring.sum(orderTableScrollPaneCons.getConstraint(SpringLayout.WEST), Spring.constant(0)));
+
+		textAreaRemarksScrollPaneCons.setConstraint(SpringLayout.NORTH,
+				Spring.sum(lblRemarksCons.getConstraint(SpringLayout.SOUTH), Spring.constant(6)));
+		textAreaRemarksScrollPaneCons.setConstraint(SpringLayout.WEST,
+				Spring.sum(orderTableScrollPaneCons.getConstraint(SpringLayout.WEST), Spring.constant(0)));
+		textAreaRemarksScrollPaneCons.setConstraint(SpringLayout.EAST,
+				Spring.sum(orderTableScrollPaneCons.getConstraint(SpringLayout.EAST), Spring.constant(0)));
+		textAreaRemarksScrollPaneCons.setHeight(Spring.constant(100));
+
+		btnConfirmCons.setConstraint(SpringLayout.EAST,
+				Spring.sum(orderTableScrollPaneCons.getConstraint(SpringLayout.EAST), Spring.constant(0)));
+		btnConfirmCons.setConstraint(SpringLayout.NORTH,
+				Spring.sum(textAreaRemarksScrollPaneCons.getConstraint(SpringLayout.SOUTH), Spring.constant(10)));
+
+		textFieldTotalCons.setConstraint(SpringLayout.EAST,
+				Spring.sum(btnConfirmCons.getConstraint(SpringLayout.WEST), Spring.constant(-10)));
+		textFieldTotalCons.setWidth(Spring.constant(100));
+		textFieldTotalCons.setConstraint(SpringLayout.NORTH,
+				Spring.sum(btnConfirmCons.getConstraint(SpringLayout.NORTH), Spring.constant(0)));
+
+		lblTotalCons.setConstraint(SpringLayout.EAST,
+				Spring.sum(textFieldTotalCons.getConstraint(SpringLayout.WEST), Spring.constant(-10)));
+		lblTotalCons.setConstraint(SpringLayout.NORTH,
+				Spring.sum(btnConfirmCons.getConstraint(SpringLayout.NORTH), Spring.constant(0)));
+
+		// --------------------------- 主面板的 SOUTH 与 EAST --------------------
+
+		// Spring confirmCornerWidthSpring =
+		// Spring.sum(btnConfirmCons.getConstraint(SpringLayout.EAST),
+		// Spring.constant(-lblTotalCons.getConstraint(SpringLayout.WEST).getValue()));
+
+		Spring maxSouthSpring = Spring.max(btnConfirmCons.getConstraint(SpringLayout.SOUTH),
+				btnSubmitCons.getConstraint(SpringLayout.SOUTH));
+		Spring maxEastSpring = Spring.max(orderTableScrollPaneCons.getConstraint(SpringLayout.EAST),
+				lblYourChoiceCons.getConstraint(SpringLayout.EAST));
+		// Spring maxEastSpring =
+		// Spring.max(orderTableScrollPaneCons.getConstraint(SpringLayout.EAST),
+		// Spring.sum(lblYourChoiceCons.getConstraint(SpringLayout.WEST),
+		// confirmCornerWidthSpring));
+
+		mainPanelCons.setConstraint(SpringLayout.SOUTH, Spring.sum(maxSouthSpring, Spring.constant(10)));
+		mainPanelCons.setConstraint(SpringLayout.EAST, Spring.sum(maxEastSpring, Spring.constant(10)));
 
 	}
 
@@ -167,11 +292,23 @@ public class UserInterface implements ActionListener {
 		if (e.getActionCommand().equals("Reset")) {
 			System.out.println("Reset");
 			menuScrollPane.resetAllNumTextField();
+			askNumPanel.setOne();
 		} else if (e.getActionCommand().equals("Submit")) {
 			System.out.println("Submit");
 			System.out.println("CusNum: " + Order.getNumOfCustomer());
+			int i = 0;
+			for (; i < tableContainers.length; i++) {
+				orderTableModel.setValueAt("", i, 0);
+				orderTableModel.setValueAt("", i, 1);
+				orderTableModel.setValueAt("", i, 2);
+			}
+			i = 0;
 			for (String[] str : Order.toTableString()) {
-				System.out.println(str[0] + "\t" + str[1] + "\t" + str[2]);
+				// System.out.println(str[0] + "\t" + str[1] + "\t" + str[2]);
+				orderTableModel.setValueAt(str[0], i, 0);
+				orderTableModel.setValueAt(str[1], i, 1);
+				orderTableModel.setValueAt(str[2], i, 2);
+				i++;
 			}
 		}
 	}

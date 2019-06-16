@@ -72,16 +72,16 @@ public class AskNumPanel extends JPanel implements ActionListener, DocumentListe
         btnAddCons.setWidth(Spring.constant(30));
 
         lblAskNumCons.setConstraint(SpringLayout.WEST,
-                Spring.sum(askNumPanelCons.getConstraint(SpringLayout.WEST), Spring.constant(2)));
+                Spring.sum(askNumPanelCons.getConstraint(SpringLayout.WEST), Spring.constant(4)));
         btnMinusCons.setConstraint(SpringLayout.WEST,
-                Spring.sum(lblAskNumCons.getConstraint(SpringLayout.EAST), Spring.constant(2)));
+                Spring.sum(lblAskNumCons.getConstraint(SpringLayout.EAST), Spring.constant(4)));
         textFieldNumInputCons.setConstraint(SpringLayout.WEST,
-                Spring.sum(btnMinusCons.getConstraint(SpringLayout.EAST), Spring.constant(2)));
+                Spring.sum(btnMinusCons.getConstraint(SpringLayout.EAST), Spring.constant(4)));
         btnAddCons.setConstraint(SpringLayout.WEST,
-                Spring.sum(textFieldNumInputCons.getConstraint(SpringLayout.EAST), Spring.constant(2)));
+                Spring.sum(textFieldNumInputCons.getConstraint(SpringLayout.EAST), Spring.constant(4)));
 
         textFieldNumInputCons.setConstraint(SpringLayout.NORTH,
-                Spring.sum(textFieldNumInputCons.getConstraint(SpringLayout.NORTH), Spring.constant(1)));
+                Spring.sum(textFieldNumInputCons.getConstraint(SpringLayout.NORTH), Spring.constant(2)));
 
         askNumPanelCons.setConstraint(SpringLayout.EAST, btnAddCons.getConstraint(SpringLayout.EAST));
         askNumPanelCons.setConstraint(SpringLayout.SOUTH, btnAddCons.getConstraint(SpringLayout.SOUTH));
@@ -204,6 +204,15 @@ public class AskNumPanel extends JPanel implements ActionListener, DocumentListe
             return 1;
         }
         return Integer.parseInt(textFieldNumInput.getText());
+    }
+
+    void setOne() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                textFieldNumInput.setText("1");
+            }
+        }).start();
     }
 
 }

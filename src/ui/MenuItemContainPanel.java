@@ -28,7 +28,7 @@ import menu.MenuItem;
  */
 public class MenuItemContainPanel extends JPanel implements ActionListener, DocumentListener, FocusListener {
 
-    private static final long serialVersionUID = 6578743630052115083L;
+    private static final long serialVersionUID = 1L;
     private MenuItem item;
     ImageIcon imageIcon;
     JLabel lblItemName, lblItemPrice;
