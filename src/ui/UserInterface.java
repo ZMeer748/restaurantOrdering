@@ -359,6 +359,7 @@ public class UserInterface implements ActionListener, ItemListener, DocumentList
 			switch (result) {
 			case JOptionPane.YES_OPTION:
 				btnReset.doClick();
+				Order.buildList();
 				// 写入到记录中
 				JOptionPane.showMessageDialog(frame, "点餐成功", "消息", JOptionPane.INFORMATION_MESSAGE);
 				break;

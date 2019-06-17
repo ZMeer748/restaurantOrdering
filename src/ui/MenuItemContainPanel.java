@@ -43,7 +43,9 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
 
         item = inItem;
 
-        lblImage = new JLabel(new ImageIcon("img/" + item.getName() + ".png"));
+        // lblImage = new JLabel(new ImageIcon(item.getImageByteData()));
+
+        lblImage = new JLabel(new ImageIcon("img/no picture.png"));
         // lblImage = new JLabel(new ImageIcon("img/no picture.png"));
         this.add(lblImage);
 

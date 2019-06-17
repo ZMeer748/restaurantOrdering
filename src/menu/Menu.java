@@ -4,14 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.TreeMap;
 
 public class Menu {
 
-	static private Map<Integer, MenuItem> itemMap = new TreeMap<>();
+	static private ArrayList<MenuItem> itemList = new ArrayList<>();
 
 	static {
 		getMenuContent("menu.txt");
@@ -28,7 +26,7 @@ public class Menu {
 				StringTokenizer tokens = new StringTokenizer(str, "/");
 				tempCode = Integer.parseInt(tokens.nextToken());
 				tempItem = new MenuItem(tempCode, tokens.nextToken(), Double.parseDouble(tokens.nextToken()));
-				itemMap.put(tempCode, tempItem);
+				itemList.add(tempItem);
 			}
 			br.close();
 		} catch (FileNotFoundException e) {
@@ -41,15 +39,15 @@ public class Menu {
 	}
 
 	static public int getNum() {
-		return itemMap.size();
+		return itemList.size();
 	}
 
-	static public Set<Map.Entry<Integer, MenuItem>> getEntrySet() {
-		return itemMap.entrySet();
+	static public ArrayList<MenuItem> getList() {
+		return itemList;
 	}
 
 	static public MenuItem getItem(int inCode) {
-		return itemMap.get(inCode);
+		return itemList.get(inCode);
 	}
 
 }
