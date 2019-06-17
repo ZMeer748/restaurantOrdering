@@ -9,26 +9,12 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
-import org.junit.Test;
-
 public class Menu {
 
 	static private Map<Integer, MenuItem> itemMap = new TreeMap<>();
 
-	public static void main(String[] args) {
-		getList_test();
-	}
-
 	static {
 		getMenuContent("menu.txt");
-	}
-
-	@Test
-	public static void getList_test() {
-		getMenuContent("menu.txt");
-		for (Map.Entry<Integer, MenuItem> item : itemMap.entrySet()) {
-			System.out.println(item.getValue().getName());
-		}
 	}
 
 	static private void getMenuContent(String filename) {
@@ -46,11 +32,11 @@ public class Menu {
 			}
 			br.close();
 		} catch (FileNotFoundException e) {
-			// e.printStackTrace();
 			System.out.println("We lose the data for the menu.");
+			e.printStackTrace();
 		} catch (NumberFormatException | IOException e) {
-			// e.printStackTrace();
 			System.out.println("There is something wrong.");
+			e.printStackTrace();
 		}
 	}
 

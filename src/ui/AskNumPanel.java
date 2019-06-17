@@ -32,7 +32,7 @@ public class AskNumPanel extends JPanel implements ActionListener, DocumentListe
     SpringLayout.Constraints askNumPanelCons, lblAskNumCons, btnMinusCons, textFieldNumInputCons, btnAddCons;
 
     AskNumPanel() {
-        lblAskNum = new JLabel("Please input the customer's number ");
+        lblAskNum = new JLabel("Customer's number ");
         lblAskNum.setFont(new Font("微软雅黑", Font.PLAIN, 18));
         this.add(lblAskNum);
 
@@ -64,7 +64,7 @@ public class AskNumPanel extends JPanel implements ActionListener, DocumentListe
         btnAddCons = sl_AskNumPanel.getConstraints(btnAdd);
 
         btnMinusCons.setHeight(Spring.sum(lblAskNumCons.getHeight(), Spring.constant(6)));
-        textFieldNumInputCons.setHeight(Spring.sum(lblAskNumCons.getHeight(), Spring.constant(4)));
+        textFieldNumInputCons.setHeight(Spring.sum(lblAskNumCons.getHeight(), Spring.constant(3)));
         btnAddCons.setHeight(Spring.sum(lblAskNumCons.getHeight(), Spring.constant(6)));
 
         btnMinusCons.setWidth(Spring.constant(30));
@@ -79,6 +79,8 @@ public class AskNumPanel extends JPanel implements ActionListener, DocumentListe
                 Spring.sum(btnMinusCons.getConstraint(SpringLayout.EAST), Spring.constant(4)));
         btnAddCons.setConstraint(SpringLayout.WEST,
                 Spring.sum(textFieldNumInputCons.getConstraint(SpringLayout.EAST), Spring.constant(4)));
+        lblAskNumCons.setConstraint(SpringLayout.NORTH,
+                Spring.sum(btnAddCons.getConstraint(SpringLayout.NORTH), Spring.constant(2)));
 
         textFieldNumInputCons.setConstraint(SpringLayout.NORTH,
                 Spring.sum(textFieldNumInputCons.getConstraint(SpringLayout.NORTH), Spring.constant(2)));

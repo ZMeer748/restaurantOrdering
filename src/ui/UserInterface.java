@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -13,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -21,6 +24,8 @@ import javax.swing.JTextField;
 import javax.swing.Spring;
 import javax.swing.SpringLayout;
 import javax.swing.UIManager;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
@@ -28,7 +33,7 @@ import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
 import menu.Menu;
 import order.Order;
 
-public class UserInterface implements ActionListener, ItemListener {
+public class UserInterface implements ActionListener, ItemListener, DocumentListener, FocusListener {
 
 	private JFrame frame;
 	static JPanel mainPanel;
@@ -124,7 +129,6 @@ public class UserInterface implements ActionListener, ItemListener {
 		comboBoxCalStrategy.setFont(new Font("微软雅黑", Font.PLAIN, 16));
 		comboBoxCalStrategy.setSelectedIndex(0);
 		mainPanel.add(comboBoxCalStrategy);
-		comboBoxCalStrategy.addItemListener(this);
 
 		// 菜单滚动面板
 		menuScrollPane = new MenuScrollPane();
@@ -136,7 +140,6 @@ public class UserInterface implements ActionListener, ItemListener {
 		btnSubmit.setForeground(Color.WHITE);
 		btnSubmit.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.lightBlue));
 		mainPanel.add(btnSubmit);
-		btnSubmit.addActionListener(this);
 		btnSubmit.setActionCommand("Submit");
 
 		btnReset = new JButton("重置");
@@ -144,8 +147,11 @@ public class UserInterface implements ActionListener, ItemListener {
 		btnReset.setForeground(Color.WHITE);
 		btnReset.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.green));
 		mainPanel.add(btnReset);
-		btnReset.addActionListener(this);
 		btnReset.setActionCommand("Reset");
+
+		comboBoxCalStrategy.addItemListener(this);
+		btnSubmit.addActionListener(this);
+		btnReset.addActionListener(this);
 
 		// 人数面板
 		askNumPanel = new AskNumPanel();
@@ -207,6 +213,10 @@ public class UserInterface implements ActionListener, ItemListener {
 		mainPanel.add(btnConfirm);
 		setBtnConfirmVisible(false);
 
+		textAreaRemarks.getDocument().addDocumentListener(this);
+		textAreaRemarks.addFocusListener(this);
+		btnConfirm.addActionListener(this);
+
 		// ---------------------------- 面板布局 --------------------------------
 		sl_mainPanel = new SpringLayout();
 		mainPanel.setLayout(sl_mainPanel);
@@ -230,6 +240,7 @@ public class UserInterface implements ActionListener, ItemListener {
 		btnConfirmCons = sl_mainPanel.getConstraints(btnConfirm);
 
 		// -------------------------- 左侧面板布局 -------------------------------
+
 		// 左上标签
 		lblMenuCons.setConstraint(SpringLayout.WEST, defaultWEST);
 		lblMenuCons.setConstraint(SpringLayout.NORTH, defaultNORTH);
@@ -328,18 +339,38 @@ public class UserInterface implements ActionListener, ItemListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Reset")) {
-			System.out.println("Reset");
 			menuScrollPane.resetAllNumTextField();
 			askNumPanel.setOne();
 			totalClear();
 			fillTable();
+			remarksClear();
 			setBtnConfirmVisible(false);
 		} else if (e.getActionCommand().equals("Submit")) {
-			System.out.println("Submit");
-			System.out.println("CusNum: " + Order.getNumOfCustomer());
+			if (Order.size() == 0) {
+				JOptionPane.showMessageDialog(frame, "请先点餐，再提交", "消息", JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
 			setTotal();
 			fillTable();
 			setBtnConfirmVisible(true);
+		} else if (e.getActionCommand().equals("确认订单")) {
+			int result = JOptionPane.showConfirmDialog(frame, Order.toResultString(getIsVIPFromComboBox()), "订单确认",
+					JOptionPane.YES_NO_CANCEL_OPTION);
+			switch (result) {
+			case JOptionPane.YES_OPTION:
+				btnReset.doClick();
+				// 写入到记录中
+				JOptionPane.showMessageDialog(frame, "点餐成功", "消息", JOptionPane.INFORMATION_MESSAGE);
+				break;
+			case JOptionPane.NO_OPTION:
+				btnReset.doClick();
+				JOptionPane.showMessageDialog(frame, "取消订单", "消息", JOptionPane.INFORMATION_MESSAGE);
+				break;
+			case JOptionPane.CANCEL_OPTION:
+				break;
+			case JOptionPane.CLOSED_OPTION:
+				break;
+			}
 		}
 	}
 
@@ -360,8 +391,8 @@ public class UserInterface implements ActionListener, ItemListener {
 		}
 	}
 
+	// 获取计算策略
 	static boolean getIsVIPFromComboBox() {
-		System.out.println(comboBoxCalStrategy.getSelectedItem().toString().equals("VIP"));
 		if (comboBoxCalStrategy.getSelectedItem().toString().equals("VIP"))
 			return true;
 		else
@@ -384,10 +415,47 @@ public class UserInterface implements ActionListener, ItemListener {
 		btnConfirm.setVisible(isVisible);
 	}
 
+	// 监听计算策略下拉菜单的行为
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		totalClear();
 		fillTable();
+		setBtnConfirmVisible(false);
+	}
+
+	private static void setRemarksText() {
+		Order.setRemarks(textAreaRemarks.getText());
+	}
+
+	public static void remarksClear() {
+		textAreaRemarks.setText("");
+	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		textAreaRemarks.selectAll();
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		setRemarksText();
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		totalClear();
+		setBtnConfirmVisible(false);
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		totalClear();
+		setBtnConfirmVisible(false);
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		totalClear();
 		setBtnConfirmVisible(false);
 	}
 

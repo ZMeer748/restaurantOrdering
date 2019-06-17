@@ -31,19 +31,21 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
     private static final long serialVersionUID = 1L;
     private MenuItem item;
     ImageIcon imageIcon;
-    JLabel lblItemName, lblItemPrice;
+    JLabel lblItemName, lblItemPrice, lblImage;
     JButton btnAdd, btnMinus;
     JTextField textFieldNumInput;
 
     SpringLayout sl_micp;
-    SpringLayout.Constraints micpCons, lblItemNameCons, lblItemPriceCons, btnMinusCons, btnAddCons,
+    SpringLayout.Constraints micpCons, lblImageCons, lblItemNameCons, lblItemPriceCons, btnMinusCons, btnAddCons,
             textFieldNumInputCons;
 
     public MenuItemContainPanel(MenuItem inItem) {
 
         item = inItem;
 
-        // imageIcon.getImage();
+        lblImage = new JLabel(new ImageIcon("img/" + item.getName() + ".png"));
+        // lblImage = new JLabel(new ImageIcon("img/no picture.png"));
+        this.add(lblImage);
 
         lblItemName = new JLabel(item.getName());
         lblItemName.setFont(new Font("微软雅黑", Font.PLAIN, 18));
@@ -82,6 +84,7 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
         textFieldNumInput.addFocusListener(this);
 
         micpCons = sl_micp.getConstraints(this);
+        lblImageCons = sl_micp.getConstraints(lblImage);
         lblItemNameCons = sl_micp.getConstraints(lblItemName);
         lblItemPriceCons = sl_micp.getConstraints(lblItemPrice);
         btnAddCons = sl_micp.getConstraints(btnAdd);
@@ -94,12 +97,17 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
 
     public void setLayouts() {
 
-        lblItemNameCons.setX(Spring.constant(6));
-        lblItemNameCons.setY(Spring.constant(6));
+        lblImageCons.setX(Spring.constant(7));
+        lblImageCons.setY(Spring.constant(7));
+
+        // lblItemNameCons.setX(Spring.constant(6));
+        lblItemNameCons.setY(Spring.constant(7));
+        lblItemNameCons.setConstraint(SpringLayout.WEST,
+                Spring.sum(lblImageCons.getConstraint(SpringLayout.SOUTH), Spring.constant(10)));
 
         lblItemPriceCons.setConstraint(SpringLayout.WEST, lblItemNameCons.getConstraint(SpringLayout.WEST));
         lblItemPriceCons.setConstraint(SpringLayout.SOUTH,
-                Spring.sum(micpCons.getConstraint(SpringLayout.SOUTH), Spring.constant(-6)));
+                Spring.sum(micpCons.getConstraint(SpringLayout.SOUTH), Spring.constant(-7)));
 
         btnAddCons.setY(Spring.constant(25));
         btnAddCons.setWidth(Spring.constant(50));
@@ -175,7 +183,6 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
     void inputCheck() {
         String text = textFieldNumInput.getText();
         if (text.matches("0[\\d]")) {
-            // System.out.println("numText matches 0*");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -183,7 +190,6 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
                 }
             }).start();
         } else if (!text.matches("[1-9]?[\\d]")) {
-            // System.out.println("numText input Error.");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -196,7 +202,6 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
     void emptyCheck() {
         String text = textFieldNumInput.getText();
         if (text.equals("")) {
-            // System.out.println("numText empty");
             new Thread(new Runnable() {
                 @Override
                 public void run() {

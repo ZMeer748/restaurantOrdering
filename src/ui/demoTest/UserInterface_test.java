@@ -62,7 +62,6 @@ public class UserInterface_test {
 	 */
 	private void initialize() {
 
-		Menu.getList_test();
 		Map<Integer, JPanel> JPanelMap = new TreeMap<>();
 		for (Map.Entry<Integer, MenuItem> entry : Menu.getEntrySet()) {
 			JPanel tempJPanel = new JPanel();

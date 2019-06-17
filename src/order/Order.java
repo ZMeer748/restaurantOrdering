@@ -11,6 +11,7 @@ import menu.MenuItem;
 public class Order {
 
     private static int numOfCustomer = 1;
+    private static String remarks;
 
     public static double getTotalCost(boolean isVIP) {
         double cusCost = numOfCustomer * 2;
@@ -40,12 +41,31 @@ public class Order {
         return tempString;
     }
 
+    public static String toResultString(boolean isVIP) {
+        String tempString = new String();
+        tempString += "客人共 " + numOfCustomer + " 位\n订单内容：\n";
+        for (Entry<Integer, MenuItem> entry : Menu.getEntrySet()) {
+            if (entry.getValue().getNum() == 0)
+                continue;
+            tempString += entry.getValue().getName() + " * " + entry.getValue().getNum() + "\n";
+        }
+        if (remarks.length() != 0) {
+            tempString += "备注：" + remarks + "\n";
+        }
+        tempString += "需支付：" + getTotalCost(isVIP);
+        return tempString;
+    }
+
     public static void setNumOfCustomer(int num) {
         numOfCustomer = num;
     }
 
     public static int getNumOfCustomer() {
         return numOfCustomer;
+    }
+
+    public static void setRemarks(String str) {
+        remarks = str;
     }
 
     public static int size() {
