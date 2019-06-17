@@ -5,7 +5,7 @@ public class MenuItem {
 	private int code, num;
 	private String name, sort;
 	private double price;
-	private byte[] imageByteData;
+	private String imageURL;
 
 	public MenuItem(int code, String name, double price) {
 		this.code = code;
@@ -18,13 +18,13 @@ public class MenuItem {
 		this.num = 0;
 	}
 
-	public MenuItem(int code, String name, double price, String sort, byte[] imageByteData) {
+	public MenuItem(int code, String name, double price, String sort, String imageURL) {
 		this.code = code;
 		this.name = name;
 		this.price = price;
 		this.sort = sort;
 		this.num = 0;
-		this.imageByteData = imageByteData;
+		this.imageURL = imageURL;
 	}
 
 	public int getCode() {
@@ -51,12 +51,12 @@ public class MenuItem {
 		this.num = num;
 	}
 
-	public byte[] getImageByteData() {
-		return imageByteData;
+	public String getImageURL() {
+		return imageURL;
 	}
 
-	public void setImageByteData(byte[] imageByteData) {
-		this.imageByteData = imageByteData;
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 
 }
