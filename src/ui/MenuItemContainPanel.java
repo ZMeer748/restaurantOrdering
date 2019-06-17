@@ -43,7 +43,7 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
 
         item = inItem;
 
-        lblImage = new JLabel(new ImageIcon("img/" + item.getName() + ".png"));
+        lblImage = new JLabel(new ImageIcon(item.getImageURL()));
         // lblImage = new JLabel(new ImageIcon("img/no picture.png"));
         this.add(lblImage);
 
@@ -100,7 +100,6 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
         lblImageCons.setX(Spring.constant(7));
         lblImageCons.setY(Spring.constant(7));
 
-        // lblItemNameCons.setX(Spring.constant(6));
         lblItemNameCons.setY(Spring.constant(7));
         lblItemNameCons.setConstraint(SpringLayout.WEST,
                 Spring.sum(lblImageCons.getConstraint(SpringLayout.SOUTH), Spring.constant(10)));

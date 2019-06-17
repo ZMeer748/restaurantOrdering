@@ -1,6 +1,6 @@
 package order;
 
-import java.util.Map.Entry;
+import java.util.ArrayList;
 
 import menu.Menu;
 import menu.MenuItem;
@@ -11,14 +11,15 @@ import menu.MenuItem;
 public class Order {
 
     private static int numOfCustomer = 1;
-    private static String remarks;
+    private static String remarks = "";
+    private static ArrayList<MenuItem> itemList = new ArrayList<>();
 
     public static double getTotalCost(boolean isVIP) {
         double cusCost = numOfCustomer * 2;
         double orderCost = 0;
         double total;
-        for (Entry<Integer, MenuItem> entry : Menu.getEntrySet()) {
-            orderCost += entry.getValue().getPrice() * entry.getValue().getNum();
+        for (MenuItem item : Menu.getList()) {
+            orderCost += item.getPrice() * item.getNum();
         }
         if (isVIP) {
             total = (cusCost + orderCost) * 0.9;
@@ -31,11 +32,10 @@ public class Order {
     public static String[][] toTableString() {
         String[][] tempString = new String[size()][3];
         int i = 0;
-        for (Entry<Integer, MenuItem> entry : Menu.getEntrySet()) {
-            if (entry.getValue().getNum() == 0)
+        for (MenuItem item : Menu.getList()) {
+            if (item.getNum() == 0)
                 continue;
-            tempString[i++] = new String[] { entry.getValue().getName(), "" + entry.getValue().getPrice(),
-                    "" + entry.getValue().getNum() };
+            tempString[i++] = new String[] { item.getName(), "" + item.getPrice(), "" + item.getNum() };
         }
 
         return tempString;
@@ -44,10 +44,10 @@ public class Order {
     public static String toResultString(boolean isVIP) {
         String tempString = new String();
         tempString += "客人共 " + numOfCustomer + " 位\n订单内容：\n";
-        for (Entry<Integer, MenuItem> entry : Menu.getEntrySet()) {
-            if (entry.getValue().getNum() == 0)
+        for (MenuItem item : Menu.getList()) {
+            if (item.getNum() == 0)
                 continue;
-            tempString += entry.getValue().getName() + " * " + entry.getValue().getNum() + "\n";
+            tempString += item.getName() + " * " + item.getNum() + "\n";
         }
         if (remarks.length() != 0) {
             tempString += "备注：" + remarks + "\n";
@@ -68,10 +68,19 @@ public class Order {
         remarks = str;
     }
 
+    public static void buildList() {
+        for (MenuItem item : Menu.getList()) {
+            if (item.getNum() == 0)
+                continue;
+            itemList.add(item);
+        }
+        // System.out.println("List built succeed.");
+    }
+
     public static int size() {
         int i = 0;
-        for (Entry<Integer, MenuItem> entry : Menu.getEntrySet()) {
-            if (entry.getValue().getNum() == 0)
+        for (MenuItem item : Menu.getList()) {
+            if (item.getNum() == 0)
                 continue;
             i++;
         }

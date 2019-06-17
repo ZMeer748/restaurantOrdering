@@ -1,7 +1,6 @@
 package ui;
 
 import java.util.ArrayList;
-import java.util.Map.Entry;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -37,8 +36,8 @@ public class MenuScrollPane extends JScrollPane {
         this.setViewportView(itemsContainPanel);
 
         MICPList = new ArrayList<>();
-        for (Entry<Integer, MenuItem> entry : Menu.getEntrySet()) {
-            MenuItemContainPanel micp = new MenuItemContainPanel(entry.getValue());
+        for (MenuItem item : Menu.getList()) {
+            MenuItemContainPanel micp = new MenuItemContainPanel(item);
             MICPList.add(micp);
             itemsContainPanel.add(micp);
         }

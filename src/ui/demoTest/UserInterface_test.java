@@ -8,8 +8,6 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,7 +18,6 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 import menu.Menu;
-import menu.MenuItem;
 
 public class UserInterface_test {
 
@@ -61,12 +58,6 @@ public class UserInterface_test {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-
-		Map<Integer, JPanel> JPanelMap = new TreeMap<>();
-		for (Map.Entry<Integer, MenuItem> entry : Menu.getEntrySet()) {
-			JPanel tempJPanel = new JPanel();
-			JPanelMap.put(entry.getKey(), tempJPanel);
-		}
 
 		frame = new JFrame();
 		frame.getContentPane().setEnabled(false);
@@ -157,7 +148,7 @@ public class UserInterface_test {
 		lblMenu.setBounds(14, 13, 88, 51);
 		panel_3.add(lblMenu);
 		lblMenu.setFont(new Font("黑体", Font.PLAIN, 44));
-		
+
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(628, 77, 479, 320);
 		panel_3.add(scrollPane_1);
