@@ -2,6 +2,9 @@ package order;
 
 import java.util.ArrayList;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+
 import menu.Menu;
 import menu.MenuItem;
 
@@ -13,6 +16,7 @@ public class Order {
     private static int numOfCustomer = 1;
     private static String remarks = "";
     private static ArrayList<MenuItem> itemList = new ArrayList<>();
+    private static String itemListJsonString = "";
 
     public static double getTotalCost(boolean isVIP) {
         double cusCost = numOfCustomer * 2;
@@ -68,13 +72,25 @@ public class Order {
         remarks = str;
     }
 
+    public static String getRemarks() {
+        return remarks;
+    }
+
     public static void buildList() {
         for (MenuItem item : Menu.getList()) {
-            if (item.getNum() == 0)
+            System.out.println(item.getNum());
+            if (item.getNum() == 0) {
                 continue;
+            }
             itemList.add(item);
         }
         // System.out.println("List built succeed.");
+        itemListJsonString = JSONArray.toJSONString(itemList, SerializerFeature.DisableCircularReferenceDetect);
+    }
+
+    public static String getItemListJsonString() {
+        System.out.println(Order.size());
+        return itemListJsonString;
     }
 
     public static int size() {

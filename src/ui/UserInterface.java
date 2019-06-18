@@ -23,13 +23,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Spring;
 import javax.swing.SpringLayout;
-import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
 
+import db.DB_Order_Process;
 import menu.Menu;
 import order.Order;
 
@@ -76,7 +76,7 @@ public class UserInterface implements ActionListener, ItemListener, DocumentList
 		try {
 			// 导入 BeautyEye 皮肤
 			org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper.launchBeautyEyeLNF();
-			UIManager.put("RootPane.setupButtonVisible", false);
+			// UIManager.put("RootPane.setupButtonVisible", false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -358,10 +358,13 @@ public class UserInterface implements ActionListener, ItemListener, DocumentList
 					JOptionPane.YES_NO_CANCEL_OPTION);
 			switch (result) {
 			case JOptionPane.YES_OPTION:
-				btnReset.doClick();
 				Order.buildList();
 				// 写入到记录中
+				DB_Order_Process.addOrder(Order.getNumOfCustomer(), Order.getItemListJsonString(), Order.getRemarks(),
+						(float) Order.getTotalCost(getIsVIPFromComboBox()));
+				// System.out.println(Order.getItemListJsonString());
 				JOptionPane.showMessageDialog(frame, "点餐成功", "消息", JOptionPane.INFORMATION_MESSAGE);
+				btnReset.doClick();
 				break;
 			case JOptionPane.NO_OPTION:
 				btnReset.doClick();
@@ -393,7 +396,7 @@ public class UserInterface implements ActionListener, ItemListener, DocumentList
 	}
 
 	// 获取计算策略
-	static boolean getIsVIPFromComboBox() {
+	public static boolean getIsVIPFromComboBox() {
 		if (comboBoxCalStrategy.getSelectedItem().toString().equals("VIP"))
 			return true;
 		else

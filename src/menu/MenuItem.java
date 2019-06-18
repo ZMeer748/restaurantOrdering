@@ -1,14 +1,29 @@
 package menu;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 public class MenuItem {
 
-	private int code, num;
-	private String name, sort;
+	@JSONField(name = "ID", ordinal = 1)
+	private int id;
+
+	@JSONField(name = "NUM", ordinal = 5)
+	private int num;
+
+	@JSONField(name = "NAME", ordinal = 2)
+	private String name;
+
+	@JSONField(name = "SORT", ordinal = 4)
+	private String sort;
+
+	@JSONField(name = "PRICE", ordinal = 3)
 	private double price;
+
+	@JSONField(serialize = false)
 	private String imageURL;
 
 	public MenuItem(int code, String name, double price) {
-		this.code = code;
+		this.id = code;
 		this.name = name;
 		this.price = price;
 		if (code > 20)
@@ -19,7 +34,7 @@ public class MenuItem {
 	}
 
 	public MenuItem(int code, String name, double price, String sort, String imageURL) {
-		this.code = code;
+		this.id = code;
 		this.name = name;
 		this.price = price;
 		this.sort = sort;
@@ -28,7 +43,7 @@ public class MenuItem {
 	}
 
 	public int getCode() {
-		return code;
+		return id;
 	}
 
 	public String getName() {
@@ -45,6 +60,22 @@ public class MenuItem {
 
 	public int getNum() {
 		return num;
+	}
+
+	public void setID(int id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public void setSort(String sort) {
+		this.sort = sort;
 	}
 
 	public void setNum(int num) {

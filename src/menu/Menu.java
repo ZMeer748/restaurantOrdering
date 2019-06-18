@@ -2,7 +2,7 @@ package menu;
 
 import java.util.ArrayList;
 
-import db.DB_IO;
+import db.DB_Menu_Process;
 
 public class Menu {
 
@@ -13,7 +13,7 @@ public class Menu {
 	}
 
 	private static void getMenuContent() {
-		itemList = DB_IO.getItemList();
+		itemList = DB_Menu_Process.getMenuItemList();
 	}
 
 	/*
