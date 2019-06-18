@@ -23,6 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Spring;
 import javax.swing.SpringLayout;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -76,7 +77,7 @@ public class UserInterface implements ActionListener, ItemListener, DocumentList
 		try {
 			// 导入 BeautyEye 皮肤
 			org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper.launchBeautyEyeLNF();
-			// UIManager.put("RootPane.setupButtonVisible", false);
+			UIManager.put("RootPane.setupButtonVisible", false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

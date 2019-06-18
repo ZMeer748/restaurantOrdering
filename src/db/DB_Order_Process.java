@@ -30,7 +30,7 @@ public class DB_Order_Process {
                 user_id = 2;
 
             String sql = "insert into order_list values( null, " + user_id + ", " + cus_num + ", '" + orderListJson
-                    + "', '" + remarks + "', " + total + ", null)";
+                    + "', '" + remarks + "', " + total + ", now())";
 
             System.out.println(sql.toString());
             s.execute(sql);
