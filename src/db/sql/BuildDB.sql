@@ -1,5 +1,7 @@
 create database OrderSystemDB;
 
+USE OrderSystemDB;
+
 CREATE TABLE
 IF NOT EXISTS user
 (
@@ -17,7 +19,7 @@ IF NOT EXISTS menu_item
     item_name VARCHAR (40) NOT NULL,
     item_price FLOAT NOT NULL,
     item_sort VARCHAR (10),
-    item_image BLOB NULL,
+    item_image_URL VARCHAR(100) NULL,
     CONSTRAINT pk_item_id PRIMARY KEY (item_id),
     CONSTRAINT uc_item_name UNIQUE (item_name)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;

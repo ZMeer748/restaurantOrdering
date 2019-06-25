@@ -1,31 +1,34 @@
 package db;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import menu.Menu;
 import menu.MenuItem;
+import resources.PropertiesProcess;
 
 /**
  * DB_IO
  */
 public class DB_Menu_Process {
 
+    static String dbName, dbUserName, dbPassword;
+
+    static {
+        dbName = PropertiesProcess.getProperty("Database.name");
+        dbUserName = PropertiesProcess.getProperty("Database.user_name");
+        dbPassword = PropertiesProcess.getProperty("Database.user_password");
+    }
+
     public static void main(String[] args) {
-        // isItemExistInMenu(7);
-        // updateItemPrice(6, 90.0f);
-        // updateItemName(6, "测试菜品");
+        for (MenuItem item : Menu.getList()) {
+            addItem(item.getCode(), item.getName(), (float) item.getPrice(), item.getSort());
+        }
     }
 
     public static boolean addItem(int id, String name, float price, String sort) {
@@ -36,28 +39,20 @@ public class DB_Menu_Process {
         }
 
         try (Connection c = DriverManager.getConnection(
-                "jdbc:mysql://127.0.0.1:3306/OrderSystemDB?serverTimezone=UTC&characterEncoding=UTF-8", "root",
-                "pw2018"); Statement s = c.createStatement();) {
+                "jdbc:mysql://127.0.0.1:3306/" + dbName + "?serverTimezone=UTC&characterEncoding=UTF-8", dbUserName,
+                dbPassword); Statement s = c.createStatement();) {
 
             File f = new File("img/" + name + ".png");
             if (!f.exists()) {
                 f = new File("img/no picture.png");
             }
-            FileInputStream fis = new FileInputStream(f);
-            String sql = "insert into menu_item values(" + id + ", '" + name + "', " + price + ", '" + sort + "', ?)";
-            PreparedStatement preparedStatement = c.prepareStatement(sql);
-            preparedStatement.setBinaryStream(1, fis, (int) f.length());
-            preparedStatement.executeUpdate();
-            fis.close();
-            preparedStatement.close();
+            String sql = "insert into menu_item values(" + id + ", '" + name + "', " + price + ", '" + sort + "', 'img/"
+                    + name + ".png')";
+            s.execute(sql);
 
             System.out.println("插入菜品 " + name + " 成功");
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
         return false;
@@ -72,8 +67,8 @@ public class DB_Menu_Process {
         }
 
         try (Connection c = DriverManager.getConnection(
-                "jdbc:mysql://127.0.0.1:3306/OrderSystemDB?serverTimezone=UTC&characterEncoding=UTF-8", "root",
-                "pw2018"); Statement s = c.createStatement();) {
+                "jdbc:mysql://127.0.0.1:3306/" + dbName + "?serverTimezone=UTC&characterEncoding=UTF-8", dbUserName,
+                dbPassword); Statement s = c.createStatement();) {
             String sql = "select * from menu_item";
 
             ResultSet rs = s.executeQuery(sql);
@@ -82,14 +77,12 @@ public class DB_Menu_Process {
                 String name = rs.getString("item_name");
                 float price = rs.getFloat("item_price");
                 String sort = rs.getString("item_sort");
-                Blob imageBlob = rs.getBlob("item_image");
+                String imageURL = rs.getString("item_image_URL");
                 File file;
-                if (imageBlob != null) {
-                    OutputStream out = null;
-                    file = File.createTempFile(name, ".png");
-                    out = new FileOutputStream(file);
-                    out.write(imageBlob.getBytes(1, (int) imageBlob.length()));
-                    out.close();
+                if (imageURL != null) {
+                    file = new File(imageURL);
+                    if (!file.exists())
+                        file = new File("img/no picture.png");
                 } else {
                     file = new File("img/no picture.png");
                 }
@@ -99,8 +92,6 @@ public class DB_Menu_Process {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
         return tempList;
@@ -114,8 +105,8 @@ public class DB_Menu_Process {
         }
 
         try (Connection c = DriverManager.getConnection(
-                "jdbc:mysql://127.0.0.1:3306/OrderSystemDB?serverTimezone=UTC&characterEncoding=UTF-8", "root",
-                "pw2018"); Statement s = c.createStatement();) {
+                "jdbc:mysql://127.0.0.1:3306/" + dbName + "?serverTimezone=UTC&characterEncoding=UTF-8", dbUserName,
+                dbPassword); Statement s = c.createStatement();) {
             String sql = "select * from menu_item where item_id = " + id;
 
             ResultSet rs = s.executeQuery(sql);
@@ -141,8 +132,8 @@ public class DB_Menu_Process {
         }
 
         try (Connection c = DriverManager.getConnection(
-                "jdbc:mysql://127.0.0.1:3306/OrderSystemDB?serverTimezone=UTC&characterEncoding=UTF-8", "root",
-                "pw2018"); Statement s = c.createStatement();) {
+                "jdbc:mysql://127.0.0.1:3306/" + dbName + "?serverTimezone=UTC&characterEncoding=UTF-8", dbUserName,
+                dbPassword); Statement s = c.createStatement();) {
             String sql = "update menu_item set item_price = " + price + " where item_id = " + id;
 
             s.execute(sql);
@@ -164,8 +155,8 @@ public class DB_Menu_Process {
         }
 
         try (Connection c = DriverManager.getConnection(
-                "jdbc:mysql://127.0.0.1:3306/OrderSystemDB?serverTimezone=UTC&characterEncoding=UTF-8", "root",
-                "pw2018"); Statement s = c.createStatement();) {
+                "jdbc:mysql://127.0.0.1:3306/" + dbName + "?serverTimezone=UTC&characterEncoding=UTF-8", dbUserName,
+                dbPassword); Statement s = c.createStatement();) {
             String sql = "update menu_item set item_name = '" + name + "' where item_id = " + id;
 
             s.execute(sql);
@@ -187,8 +178,8 @@ public class DB_Menu_Process {
         }
 
         try (Connection c = DriverManager.getConnection(
-                "jdbc:mysql://127.0.0.1:3306/OrderSystemDB?serverTimezone=UTC&characterEncoding=UTF-8", "root",
-                "pw2018"); Statement s = c.createStatement();) {
+                "jdbc:mysql://127.0.0.1:3306/" + dbName + "?serverTimezone=UTC&characterEncoding=UTF-8", dbUserName,
+                dbPassword); Statement s = c.createStatement();) {
             String sql = "update menu_item set item_sort = '" + sort + "' where item_id = " + id;
 
             s.execute(sql);
