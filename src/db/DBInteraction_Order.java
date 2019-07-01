@@ -8,9 +8,9 @@ import java.sql.Statement;
 import ui.UserInterface;
 
 /**
- * DB_Order_Process
+ * DBInteraction_Order
  */
-public class DB_Order_Process {
+public class DBInteraction_Order {
 
     public static boolean addOrder(int cus_num, String orderListJson, String remarks, float total) {
         try {

@@ -30,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
 
-import db.DB_Order_Process;
+import db.DBInteraction_Order;
 import menu.Menu;
 import order.Order;
 
@@ -361,7 +361,7 @@ public class UserInterface implements ActionListener, ItemListener, DocumentList
 			case JOptionPane.YES_OPTION:
 				Order.buildList();
 				// 写入到记录中
-				DB_Order_Process.addOrder(Order.getNumOfCustomer(), Order.getItemListJsonString(), Order.getRemarks(),
+				DBInteraction_Order.addOrder(Order.getNumOfCustomer(), Order.getItemListJsonString(), Order.getRemarks(),
 						(float) Order.getTotalCost(getIsVIPFromComboBox()));
 				// System.out.println(Order.getItemListJsonString());
 				JOptionPane.showMessageDialog(frame, "点餐成功", "消息", JOptionPane.INFORMATION_MESSAGE);

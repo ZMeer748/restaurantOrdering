@@ -31,7 +31,7 @@ public class MenuItem {
 		else
 			sort = "Food";
 		this.num = 0;
-		imageURL = "img/" + name + ".png";
+		imageURL = "resources\\img\\" + name + ".png";
 	}
 
 	public MenuItem(int code, String name, double price, String sort, String imageURL) {
@@ -43,7 +43,7 @@ public class MenuItem {
 		this.imageURL = imageURL;
 	}
 
-	public int getCode() {
+	public int getID() {
 		return id;
 	}
 

@@ -37,3 +37,16 @@ IF NOT EXISTS order_list
     CONSTRAINT pk_item_id PRIMARY KEY (order_id),
     CONSTRAINT fk_user_id FOREIGN KEY(order_user_id) REFERENCES user(user_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+use OrderSystemDB
+insert into user
+values
+(1, '123456', 'admin', 'Y'),
+(2, '123456', 'nonVIP', 'N'),
+(3, '123456', 'VIP', 'Y');
+
+-- 查询订单记录
+select order_id, order_user_id, order_customer_num, order_remarks, order_total, order_datetime from order_list;
+
+--查询订单记录内容
+select order_id, order_content from order_list;

@@ -15,7 +15,7 @@ import resources.PropertiesProcess;
 /**
  * DB_IO
  */
-public class DB_Menu_Process {
+public class DBInteraction_Menu {
 
     static String dbName, dbUserName, dbPassword;
 
@@ -27,7 +27,7 @@ public class DB_Menu_Process {
 
     public static void main(String[] args) {
         for (MenuItem item : Menu.getList()) {
-            addItem(item.getCode(), item.getName(), (float) item.getPrice(), item.getSort());
+            addItem(item.getID(), item.getName(), (float) item.getPrice(), item.getSort());
         }
     }
 
@@ -42,12 +42,12 @@ public class DB_Menu_Process {
                 "jdbc:mysql://127.0.0.1:3306/" + dbName + "?serverTimezone=UTC&characterEncoding=UTF-8", dbUserName,
                 dbPassword); Statement s = c.createStatement();) {
 
-            File f = new File("img/" + name + ".png");
+            File f = new File("resources/img/" + name + ".png");
             if (!f.exists()) {
-                f = new File("img/no picture.png");
+                f = new File("resources/img/no picture.png");
             }
-            String sql = "insert into menu_item values(" + id + ", '" + name + "', " + price + ", '" + sort + "', 'img/"
-                    + name + ".png')";
+            String sql = "insert into menu_item values(" + id + ", '" + name + "', " + price + ", '" + sort
+                    + "', 'resources/img/" + name + ".png')";
             s.execute(sql);
 
             System.out.println("插入菜品 " + name + " 成功");
@@ -78,15 +78,14 @@ public class DB_Menu_Process {
                 float price = rs.getFloat("item_price");
                 String sort = rs.getString("item_sort");
                 String imageURL = rs.getString("item_image_URL");
-                File file;
+                // File file;
+                String url;
                 if (imageURL != null) {
-                    file = new File(imageURL);
-                    if (!file.exists())
-                        file = new File("img/no picture.png");
+                    url = imageURL;
                 } else {
-                    file = new File("img/no picture.png");
+                    url = "resources/img/no picture.png";
                 }
-                tempList.add(new MenuItem(id, name, price, sort, file.getAbsolutePath()));
+                tempList.add(new MenuItem(id, name, price, sort, url));
                 // System.out.printf("%d\t%s\t%f\t%s\t%s%n", id, name, price, sort,
                 // file.getAbsolutePath());
             }

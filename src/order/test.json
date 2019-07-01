@@ -1,0 +1,67 @@
+[{
+    "NUM": 0,
+    "NAME": "Curry beef with rice",
+    "SORT": "Food",
+    "code": 1,
+    "PRICE": 60.0
+}, {
+    "NUM": 0,
+    "NAME": "YangZhou fire rice",
+    "SORT": "Food",
+    "code": 3,
+    "PRICE": 45.0
+}, {
+    "NUM": 2,
+    "NAME": "Sirloin Steak with Spaghetti",
+    "SORT": "Food",
+    "code": 4,
+    "PRICE": 72.0
+}, {
+    "NUM": 0,
+    "NAME": "Sushi set meal",
+    "SORT": "Food",
+    "code": 2,
+    "PRICE": 65.0
+}, {
+    "NUM": 2,
+    "NAME": "Sirloin Steak with Spaghetti",
+    "SORT": "Food",
+    "code": 4,
+    "PRICE": 72.0
+}, {
+    "NUM": 2,
+    "NAME": "Soft drink",
+    "SORT": "Drink",
+    "code": 21,
+    "PRICE": 10.0
+}, {
+    "NUM": 2,
+    "NAME": "Soft drink",
+    "SORT": "Drink",
+    "code": 21,
+    "PRICE": 10.0
+}, {
+    "NUM": 3,
+    "NAME": "Red wine",
+    "SORT": "Drink",
+    "code": 22,
+    "PRICE": 15.0
+}, {
+    "NUM": 2,
+    "NAME": "Sirloin Steak with Spaghetti",
+    "SORT": "Food",
+    "code": 4,
+    "PRICE": 72.0
+}, {
+    "NUM": 2,
+    "NAME": "Soft drink",
+    "SORT": "Drink",
+    "code": 21,
+    "PRICE": 10.0
+}, {
+    "NUM": 3,
+    "NAME": "Red wine",
+    "SORT": "Drink",
+    "code": 22,
+    "PRICE": 15.0
+}]
