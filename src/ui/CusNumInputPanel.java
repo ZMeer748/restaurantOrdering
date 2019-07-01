@@ -18,9 +18,9 @@ import javax.swing.event.DocumentListener;
 import order.Order;
 
 /**
- * AskNumPanel
+ * CusNumInputPanel
  */
-public class AskNumPanel extends JPanel implements ActionListener, DocumentListener, FocusListener {
+public class CusNumInputPanel extends JPanel implements ActionListener, DocumentListener, FocusListener {
 
     private static final long serialVersionUID = -4919314229585569132L;
     JLabel lblAskNum;
@@ -31,7 +31,7 @@ public class AskNumPanel extends JPanel implements ActionListener, DocumentListe
 
     SpringLayout.Constraints askNumPanelCons, lblAskNumCons, btnMinusCons, textFieldNumInputCons, btnAddCons;
 
-    AskNumPanel() {
+    CusNumInputPanel() {
         lblAskNum = new JLabel("Customer's number ");
         lblAskNum.setFont(new Font("微软雅黑", Font.PLAIN, 18));
         this.add(lblAskNum);
@@ -109,16 +109,16 @@ public class AskNumPanel extends JPanel implements ActionListener, DocumentListe
     public void focusLost(FocusEvent e) {
         emptyCheck();
         setCustomersNum();
-        UserInterface.setBtnConfirmVisible(false);
-        UserInterface.totalClear();
+        UserOrderingSystem.setBtnConfirmVisible(false);
+        UserOrderingSystem.totalClear();
     }
 
     @Override
     public void insertUpdate(DocumentEvent e) {
         inputCheck();
         setCustomersNum();
-        UserInterface.setBtnConfirmVisible(false);
-        UserInterface.totalClear();
+        UserOrderingSystem.setBtnConfirmVisible(false);
+        UserOrderingSystem.totalClear();
 
     }
 
@@ -131,8 +131,8 @@ public class AskNumPanel extends JPanel implements ActionListener, DocumentListe
     public void changedUpdate(DocumentEvent e) {
         emptyCheck();
         setCustomersNum();
-        UserInterface.setBtnConfirmVisible(false);
-        UserInterface.totalClear();
+        UserOrderingSystem.setBtnConfirmVisible(false);
+        UserOrderingSystem.totalClear();
     }
 
     void inputCheck() {

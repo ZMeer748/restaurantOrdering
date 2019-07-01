@@ -34,7 +34,7 @@ import db.DBInteraction_Order;
 import menu.Menu;
 import order.Order;
 
-public class UserInterface implements ActionListener, ItemListener, DocumentListener, FocusListener {
+public class UserOrderingSystem implements ActionListener, ItemListener, DocumentListener, FocusListener {
 
 	private JFrame frame;
 	static JPanel mainPanel;
@@ -45,7 +45,7 @@ public class UserInterface implements ActionListener, ItemListener, DocumentList
 	static JLabel lblMenu, lblPleaseOrdering;
 	static MenuScrollPane menuScrollPane;
 	static JButton btnSubmit, btnReset, btnAskNumAdd, btnAskNumMinus;
-	static AskNumPanel askNumPanel;
+	static CusNumInputPanel askNumPanel;
 	static JComboBox<String> comboBoxCalStrategy;
 
 	static SpringLayout.Constraints mainPanelCons, lblMenuCons, lblPleaseOrderingCons, menuScrollPaneCons,
@@ -84,7 +84,7 @@ public class UserInterface implements ActionListener, ItemListener, DocumentList
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UserInterface window = new UserInterface();
+					UserOrderingSystem window = new UserOrderingSystem();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -96,7 +96,7 @@ public class UserInterface implements ActionListener, ItemListener, DocumentList
 	/**
 	 * Create the application.
 	 */
-	public UserInterface() {
+	public UserOrderingSystem() {
 		initialize();
 	}
 
@@ -155,7 +155,7 @@ public class UserInterface implements ActionListener, ItemListener, DocumentList
 		btnReset.addActionListener(this);
 
 		// 人数面板
-		askNumPanel = new AskNumPanel();
+		askNumPanel = new CusNumInputPanel();
 		mainPanel.add(askNumPanel);
 
 		// ----------------------- 面板右侧内容 ----------------------------------

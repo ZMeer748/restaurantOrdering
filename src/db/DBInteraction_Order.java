@@ -14,7 +14,7 @@ import com.alibaba.fastjson.JSON;
 import menu.MenuItem;
 import order.OrderRecord;
 import property.PropertiesProcess;
-import ui.UserInterface;
+import ui.UserOrderingSystem;
 
 /**
  * DBInteraction_Order
@@ -32,7 +32,11 @@ public class DBInteraction_Order {
     public static void main(String[] args) {
         ArrayList<OrderRecord> orderRecordList = getAllOrderRecord();
         for (OrderRecord or : orderRecordList) {
-            System.out.println(or.getTotal());
+            System.out.println("id: "+or.getId() + "\tnum: " + or.getNumOfCustomer() + "\ttotal: " + or.getTotal());
+            for(MenuItem item : or.getItemList()) {
+                System.out.println("item_name: " + item.getName() + "\titem_num: " + item.getNum());
+            }
+            System.out.println("-----------------------------------------------");
         }
     }
 
@@ -48,7 +52,7 @@ public class DBInteraction_Order {
                 dbPassword); Statement s = c.createStatement();) {
 
             int user_id;
-            if (UserInterface.getIsVIPFromComboBox()) {
+            if (UserOrderingSystem.getIsVIPFromComboBox()) {
                 user_id = 3;
             } else
                 user_id = 2;
@@ -129,6 +133,7 @@ public class DBInteraction_Order {
             String sql = "select * from order_list where order_id = " + order_id;
 
             ResultSet rs = s.executeQuery(sql);
+            rs.next();
             int id = rs.getInt("order_id");
             int user_id = rs.getInt("order_user_id");
             int cus_num = rs.getInt("order_customer_num");

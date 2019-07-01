@@ -30,7 +30,7 @@ IF NOT EXISTS order_list
     order_id INT AUTO_INCREMENT,
     order_user_id INT,
     order_customer_num SMALLINT,
-    order_content VARCHAR (200),
+    order_content VARCHAR (2000),
     order_remarks VARCHAR (200) NOT NULL,
     order_total FLOAT NOT NULL,
     order_datetime DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -58,10 +58,10 @@ insert into menu_item values
 
 use OrderSystemDB
 insert into menu_item values
-(6, '测试', 66, 'Drink', null);
+(8, '测试', 66, 'Drink', null);
 
 use OrderSystemDB
-update menu_item set item_image_URL = 'C:/Users/SISSON/Desktop/Chicken vegetable roll.png' where item_id = 6;
+update menu_item set item_image_URL = 'D:/Chicken vegetable roll.png' where item_id = 8;
 
 -- 查询订单记录
 use OrderSystemDB
