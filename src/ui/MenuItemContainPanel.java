@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -43,14 +44,16 @@ public class MenuItemContainPanel extends JPanel implements ActionListener, Docu
 
         item = inItem;
 
-        // lblImage = new JLabel(new ImageIcon(item.getImageURL()));
-        // lblImage = new JLabel(new ImageIcon(MenuItemContainPanel.class.getResource("resources/img/no picture.png")));
         System.out.println(item.getImageURL());
         try {
             lblImage = new JLabel(new ImageIcon(MenuItemContainPanel.class.getResource(item.getImageURL())));
         } catch (Exception e) {
-            //TODO: handle exception
-            lblImage = new JLabel(new ImageIcon(MenuItemContainPanel.class.getResource("resources/img/no picture.png")));
+            if (new File(item.getImageURL()).exists()) {
+                lblImage = new JLabel(new ImageIcon(item.getImageURL()));
+            } else {
+                lblImage = new JLabel(
+                        new ImageIcon(MenuItemContainPanel.class.getResource("resources/img/no picture.png")));
+            }
         }
         this.add(lblImage);
 

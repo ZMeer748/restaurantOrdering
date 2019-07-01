@@ -1,6 +1,5 @@
 package db;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -8,9 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import menu.Menu;
 import menu.MenuItem;
-import resources.PropertiesProcess;
+import property.PropertiesProcess;
 
 /**
  * DB_IO
@@ -26,9 +24,10 @@ public class DBInteraction_Menu {
     }
 
     public static void main(String[] args) {
-        for (MenuItem item : Menu.getList()) {
-            addItem(item.getID(), item.getName(), (float) item.getPrice(), item.getSort());
-        }
+        // for (MenuItem item : Menu.getList()) {
+        // addItem(item.getID(), item.getName(), (float) item.getPrice(),
+        // item.getSort());
+        // }
     }
 
     public static boolean addItem(int id, String name, float price, String sort) {
@@ -42,12 +41,31 @@ public class DBInteraction_Menu {
                 "jdbc:mysql://127.0.0.1:3306/" + dbName + "?serverTimezone=UTC&characterEncoding=UTF-8", dbUserName,
                 dbPassword); Statement s = c.createStatement();) {
 
-            File f = new File("resources/img/" + name + ".png");
-            if (!f.exists()) {
-                f = new File("resources/img/no picture.png");
-            }
             String sql = "insert into menu_item values(" + id + ", '" + name + "', " + price + ", '" + sort
                     + "', 'resources/img/" + name + ".png')";
+            s.execute(sql);
+
+            System.out.println("插入菜品 " + name + " 成功");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean addItem(int id, String name, float price, String sort, String imageUrl) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try (Connection c = DriverManager.getConnection(
+                "jdbc:mysql://127.0.0.1:3306/" + dbName + "?serverTimezone=UTC&characterEncoding=UTF-8", dbUserName,
+                dbPassword); Statement s = c.createStatement();) {
+
+            String sql = "insert into menu_item values(" + id + ", '" + name + "', " + price + ", '" + sort + "', '"
+                    + imageUrl + "')";
             s.execute(sql);
 
             System.out.println("插入菜品 " + name + " 成功");
@@ -191,4 +209,28 @@ public class DBInteraction_Menu {
         System.out.println("update failed");
         return false;
     }
+
+    public static boolean deleteItem(int id) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try (Connection c = DriverManager.getConnection(
+                "jdbc:mysql://127.0.0.1:3306/" + dbName + "?serverTimezone=UTC&characterEncoding=UTF-8", dbUserName,
+                dbPassword); Statement s = c.createStatement();) {
+            String sql = "delete from menu_list where item_id = " + id;
+
+            s.execute(sql);
+
+            System.out.println("delete from menu_list where item_id = " + id);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("delete failed");
+        return false;
+    }
+
 }

@@ -361,7 +361,7 @@ public class UserInterface implements ActionListener, ItemListener, DocumentList
 			case JOptionPane.YES_OPTION:
 				Order.buildList();
 				// 写入到记录中
-				DBInteraction_Order.addOrder(Order.getNumOfCustomer(), Order.getItemListJsonString(), Order.getRemarks(),
+				DBInteraction_Order.addOrderRecord(Order.getNumOfCustomer(), Order.getItemListJsonString(), Order.getRemarks(),
 						(float) Order.getTotalCost(getIsVIPFromComboBox()));
 				// System.out.println(Order.getItemListJsonString());
 				JOptionPane.showMessageDialog(frame, "点餐成功", "消息", JOptionPane.INFORMATION_MESSAGE);

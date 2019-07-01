@@ -25,6 +25,7 @@ public class Menu {
 	}
 
 	// static private void getMenuContent(String filename) {
+	/*
 	static private void getMenuContent(URL url) {
 		System.out.println(url);
 		try {
@@ -49,6 +50,7 @@ public class Menu {
 			e.printStackTrace();
 		}
 	}
+	*/
 
 	public static int getNum() {
 		return itemList.size();

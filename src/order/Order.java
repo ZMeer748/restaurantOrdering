@@ -37,8 +37,10 @@ public class Order {
         String[][] tempString = new String[size()][3];
         int i = 0;
         for (MenuItem item : Menu.getList()) {
-            if (item.getNum() == 0)
+            if (item.getNum() == 0) {
+                itemList.remove(item);
                 continue;
+            }
             tempString[i++] = new String[] { item.getName(), "" + item.getPrice(), "" + item.getNum() };
         }
 
