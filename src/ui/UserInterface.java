@@ -334,6 +334,9 @@ public class UserInterface implements ActionListener, ItemListener, DocumentList
 		mainPanelCons.setConstraint(SpringLayout.SOUTH, Spring.sum(maxSouthSpring, Spring.constant(10)));
 		mainPanelCons.setConstraint(SpringLayout.EAST, Spring.sum(maxEastSpring, Spring.constant(10)));
 
+		if (Menu.getNum() == 0) {
+			JOptionPane.showMessageDialog(frame, "读取菜单信息失败……", "消息", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 
 	// 重置、提交与确认订单按钮的监听响应
@@ -354,6 +357,7 @@ public class UserInterface implements ActionListener, ItemListener, DocumentList
 			setTotal();
 			fillTable();
 			setBtnConfirmVisible(true);
+			setRemarksText();
 		} else if (e.getActionCommand().equals("确认订单")) {
 			int result = JOptionPane.showConfirmDialog(frame, Order.toResultString(getIsVIPFromComboBox()), "订单确认",
 					JOptionPane.YES_NO_CANCEL_OPTION);
@@ -361,8 +365,8 @@ public class UserInterface implements ActionListener, ItemListener, DocumentList
 			case JOptionPane.YES_OPTION:
 				Order.buildList();
 				// 写入到记录中
-				DBInteraction_Order.addOrderRecord(Order.getNumOfCustomer(), Order.getItemListJsonString(), Order.getRemarks(),
-						(float) Order.getTotalCost(getIsVIPFromComboBox()));
+				DBInteraction_Order.addOrderRecord(Order.getNumOfCustomer(), Order.getItemListJsonString(),
+						Order.getRemarks(), (float) Order.getTotalCost(getIsVIPFromComboBox()));
 				// System.out.println(Order.getItemListJsonString());
 				JOptionPane.showMessageDialog(frame, "点餐成功", "消息", JOptionPane.INFORMATION_MESSAGE);
 				btnReset.doClick();

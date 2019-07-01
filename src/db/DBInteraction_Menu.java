@@ -220,11 +220,11 @@ public class DBInteraction_Menu {
         try (Connection c = DriverManager.getConnection(
                 "jdbc:mysql://127.0.0.1:3306/" + dbName + "?serverTimezone=UTC&characterEncoding=UTF-8", dbUserName,
                 dbPassword); Statement s = c.createStatement();) {
-            String sql = "delete from menu_list where item_id = " + id;
+            String sql = "delete from menu_item where item_id = " + id;
 
             s.execute(sql);
 
-            System.out.println("delete from menu_list where item_id = " + id);
+            System.out.println("delete from menu_item where item_id = " + id);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -233,4 +233,75 @@ public class DBInteraction_Menu {
         return false;
     }
 
+    public static String getItemName(int id) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try (Connection c = DriverManager.getConnection(
+                "jdbc:mysql://127.0.0.1:3306/" + dbName + "?serverTimezone=UTC&characterEncoding=UTF-8", dbUserName,
+                dbPassword); Statement s = c.createStatement();) {
+            String sql = "select * from menu_item where item_id = " + id;
+
+            ResultSet rs = s.executeQuery(sql);
+            rs.next();
+            String name = rs.getString("item_name");
+
+            return name;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static float getItemPrice(int id) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try (Connection c = DriverManager.getConnection(
+                "jdbc:mysql://127.0.0.1:3306/" + dbName + "?serverTimezone=UTC&characterEncoding=UTF-8", dbUserName,
+                dbPassword); Statement s = c.createStatement();) {
+            String sql = "select * from menu_item where item_id = " + id;
+
+            ResultSet rs = s.executeQuery(sql);
+            rs.next();
+            float price = rs.getFloat("item_price");
+
+            return price;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static String getItemSort(int id) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try (Connection c = DriverManager.getConnection(
+                "jdbc:mysql://127.0.0.1:3306/" + dbName + "?serverTimezone=UTC&characterEncoding=UTF-8", dbUserName,
+                dbPassword); Statement s = c.createStatement();) {
+            String sql = "select * from menu_item where item_id = " + id;
+
+            ResultSet rs = s.executeQuery(sql);
+            rs.next();
+            String sort = rs.getString("item_sort");
+
+            return sort;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -71,7 +71,8 @@ public class Order {
     }
 
     public static void setRemarks(String str) {
-        remarks = str;
+        remarks = new String(str);
+        // remarks = str;
     }
 
     public static String getRemarks() {
